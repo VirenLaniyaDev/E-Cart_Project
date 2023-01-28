@@ -1,0 +1,94 @@
+<header>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>E-Cart</h2>
+        </div>
+
+        <div class="nav-search">
+            <form action="/search" class="nav-search-form">
+                <input type="search" name="search" class="search" placeholder="Search for Products, Categories and more" value="<%= searchString %>">
+                <button type="submit" class="search-btn">
+                    <img src="/assets/icons/search_icon.svg" alt="Search">
+                </button>
+            </form>
+        </div>
+
+        <div class="nav-cart-profile">
+            <a href="/" class="nav-home tooltip">
+                <img src="/assets/icons/home_icon_white.svg" alt="Home">
+                <span class="tooltip-text">Home</span>
+            </a>
+            <% if(isAuthenticated){ %>
+            <a href="/cart" class="nav-cart tooltip">
+                <img src="/assets/icons/cart_icon_white.svg" alt="Cart">
+                <small class="cart-item-label"><%= cartItems %></small>
+                <span class="tooltip-text">Cart</span>
+            </a>
+            <% } %>
+
+            <% if(!isAuthenticated){ %>
+            <a href="/login">
+                <button class="nav-login-btn">Login</button>
+            </a>
+            <a href="/signup">
+                <button class="nav-signup-btn">Signup</button>
+            </a>
+            <% } %>
+
+            <% if(isAuthenticated){ %>
+            <!-- Dropdown menu from profile button -->
+            <button type="button" class="profile-image-btn" id="profile-image-btn">
+                <% if(profilePicture){ %>
+                    <img src="/<%= profilePicture %>" class="profile-img">
+                <% } else { %>
+                    <img src="/assets/images/user.png" class="profile-img">
+                <% } %>
+                <img src="/assets/icons/down_icon_white.svg" class="down-arrow-icon" id="downIcon">
+            </button>
+            <div class="nav-menu-wrap" id="subMenu">
+                <div class="nav-menu">
+                    <div class="user-info">
+                        <a href="/profile">
+                            <% if(profilePicture){ %>
+                                <img src="/<%= profilePicture %>">
+                            <% } else { %>
+                                <img src="/assets/images/user.png">
+                            <% } %>
+                        </a>
+                        <h3><%= userName %></h3>
+                    </div>
+                    <hr class="nav-menu-hr">
+                    <a href="/profile" class="menu-item-link">
+                        <img src="/assets/icons/profile_icon.svg">
+                        <p>Your Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="/orders" class="menu-item-link">
+                        <img src="/assets/icons/orders_icon.svg">
+                        <p>Your Orders</p>
+                        <span>></span>
+                    </a>
+                    <a href="/cart" class="menu-item-link">
+                        <img src="/assets/icons/cart_icon_black.svg">
+                        <p>Cart</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="menu-item-link">
+                        <img src="/assets/icons/helpSupport_icon.svg">
+                        <p>Help & Support</p>
+                        <span>></span>
+                    </a>
+                    <hr class="nav-menu-hr">
+                    <form action="/signout" method="post">
+                        <button type="submit" class="menu-item-link sign-out-btn">
+                            <img src="/assets/icons/signout_icon_black.svg">
+                            <p>Sign out</p>
+                            <span>></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </nav>
+</header>

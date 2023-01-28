@@ -1,0 +1,171 @@
+.mtb-8 {
+    margin: 8px 0;
+}
+
+.mtb-16{
+    margin: 16px 0;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.page-title-info::after {
+    display         : block;
+    content         : "";
+    width           : 100%;
+    height          : 2px;
+    border-radius   : 8px;
+    background-color: var(--secondary-clr);
+}
+
+.page-title-info .page-title {
+    margin     : 8px 0;
+    padding    : 0 8px;
+    font-size  : 32px;
+    font-weight: 500;
+}
+
+.page-title-info .page-info {
+    margin : 8px 0;
+    padding: 0 8px;
+}
+
+/********* Info-field-container *********/
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image img{
+    width: 100%;
+    max-width: 512px;
+    height: auto;
+    max-height: 256px;
+    object-fit: contain;
+}
+
+.product-info-container .info-field{
+    margin: 8px 0;
+    padding: 8px;
+    background-color:var(--bg-light);
+}
+
+.product-info-container .info-field h3{
+    font-weight: 600;
+}
+
+/** Ratings bar **/
+.ratings-bar {
+    padding      : 16px;
+    border-radius: 8px;
+    border       : 2px solid var(--bg-light);
+    box-shadow: 0 0 8px #d0d0d0;
+}
+
+.heading {
+    font-size   : 25px;
+    margin-right: 25px;
+}
+
+.star {
+    color    : #e3e3e3;
+    font-size: 25px;
+}
+
+.checked {
+    color: orange;
+}
+
+.rating-divider {
+    margin          : 8px 0;
+    border          : none;
+    height          : 2px;
+    background-color: var(--bg-light);
+}
+
+/* Three column layout */
+.side {
+    float     : left;
+    width     : 15%;
+    margin-top: 10px;
+}
+
+.middle {
+    float     : left;
+    width     : 70%;
+    height    : 100%;
+    margin-top: 12px;
+}
+
+/* Place text to the right */
+.right {
+    text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear  : both;
+}
+
+/* The bar container */
+.bar-container {
+    width           : 100%;
+    background-color: #e3e3e3;
+    text-align      : center;
+    border-radius   : 4px;
+    color           : white;
+    vertical-align  : middle;
+}
+
+/* Individual bars */
+.bar {
+    width        : 0%;
+    border-radius: 4px;
+    height       : 18px;
+    transition   : var(--primary-transition-time-sec) ease;
+    transition   : 0.5s ease;
+}
+
+.bar-5 {
+    background-color: var(--success-clr);
+}
+
+.bar-4 {
+    background-color: var(--secondary-dark-clr);
+}
+
+.bar-3 {
+    background-color: var(--supporter-clr);
+}
+
+.bar-2 {
+    background-color: #ff9800;
+}
+
+.bar-1 {
+    background-color: var(--danger-clr);
+}
+
+/* Date info field */
+.product-info-container .date-info-field{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    color: #808080;
+}
+
+/* Buttons */
+.reference > * {
+    display: inline-block;
+    margin-right:8px ;
+    text-decoration: none;
+}
+
+.delete-prod-btn{
+    background-color: var(--danger-clr);
+}

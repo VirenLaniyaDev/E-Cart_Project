@@ -1,0 +1,14 @@
+{
+    "port": "PORT_FOR_THIS_SERVICE (Default is 3001)",
+    "session": {
+        "uri": "YOUR_MONGODB_CONNECTION_URI",
+        "secret_key": "YOUR_SECRET_KEY",
+        "collection": "user_sessions"
+    },
+    "mail_service":{
+        "sg_ecart_api_key":"YOUR_SENDGRID_API_KEY",
+        "ecart_email":"YOUR_SENDGRID_VERIFIED_EMAIL",
+        "signupSucceeded_templateId":"d-8603a281fcb84ed18e634ab22d82ee19",
+        "resetPassword_templateId":"d-899c6861ce5642ab9fe30c43f39e9c43"
+    }
+}

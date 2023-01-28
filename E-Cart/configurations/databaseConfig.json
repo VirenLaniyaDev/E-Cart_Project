@@ -1,0 +1,6 @@
+{
+    "database": {
+        "connection_string": "YOUR_MONGODB_CONNECTION_STRING",
+        "name": "E_Cart"
+    }
+}

@@ -1,0 +1,168 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/product/cart.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="cart-container mtb-8">
+            <% if( products.length > 0 ){ %>
+            <div class="cart-wrapper">
+                <div class="cart-content">
+                    <div class="delivery-address-container">
+                        <div class="delivery-address">
+                            <span>Deliver To : </span>
+                            <span class="userName"><%= user.name %></span>
+                            <address class="address"><%= user.address %></address>
+                            <div class="change-add-form input-container d-none">
+                                <form action="/change-address" method="post" id="changeAdd-form">
+                                    <small class="input-error" id="delivery_address-err"></small>
+                                    <textarea name="delivery_address" id="delivery_address-textarea" placeholder="Enter address for delivery"><%= user.address %></textarea>
+                                    <div class="save-cancel-btn">
+                                        <button type="submit" class="btn new-add-btn">Save Address</button>
+                                        <button type="button" class="address-btn cancel-btn">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="change-address">
+                            <% if(user.address && (user.address.length > 0)){ %>
+                            <button type="button" class="btn address-btn" id="change-add-btn">Change</button>
+                            <% } else {%>
+                            <button type="button" class="btn address-btn" id="change-add-btn">Add Address</button>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% products.forEach( product => { %>
+                    <div class="cart-item-container">
+                        <a href="/product/<%= product._id %>" class="product-url">
+                            <div class="item-image">
+                                <img src="/<%= product.image %>">
+                            </div>
+                        </a>
+                        <div class="item-info-wrapper">
+                            <div class="item-details">
+                                <a href="/product/<%= product._id %>" class="product-url">
+                                    <h4 class="product-title"><%= product.title %></h4>
+                                </a>
+                                <small class="product-seller">Seller : <%= product.seller.business_name %></small>
+                                <% if(product.quantity <= 0){ %>
+                                <small class="stock danger-stock">Unavailable</small>
+                                <% } else { %>
+                                <small class="stock success-stock">In Stock</small>
+                                <% } %>
+                                <div class="price-discount-info">
+                                    <span class="price">&#8377;<%= product.sellingPrice %></span>
+                                    <% if(product.discount_percentage > 0){ %>
+                                    <span class="mrp"><del>&#8377;<%= product.MRP %></del></span>
+                                    <span class="discount_percentage"><%= product.discount_percentage %>% Off</span>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="item-quantity-delivery">
+                                <div class="quantity-box">
+                                    <span>
+                                        <form action="/cart/prod-qnty-decrement" method="post">
+                                            <input type="hidden" name="productId" value="<%= product._id %>">
+                                            <button type="submit" class="qnt-btn decrement-qnt">-</button>
+                                        </form>
+                                    </span>
+                                    <span class="quantity"><%= product.cp_quantity %></span>
+                                    <span>
+                                        <form action="/cart/prod-qnty-increment" method="post">
+                                            <input type="hidden" name="productId" value="<%= product._id %>">
+                                            <input type="hidden" name="prod_quantity" value="<%= product.quantity %>">
+                                            <button type="submit" class="qnt-btn increment-qnt">+</button>
+                                        </form>
+                                    </span>
+                                    <span class="remove-product">
+                                        <form action="/cart/remove-product" method="post">
+                                            <input type="hidden" name="productId" value="<%= product._id %>">
+                                            <button type="submit" class="btn remove-prod-btn">Remove</button>
+                                        </form>
+                                    </span>
+                                </div>
+                                <div class="delivery-by">
+                                    <div class="delivery-by-content">
+                                        <span>Delivery by,</span>
+                                        <span class="bold"><%- include('../includes/helpers/getLocalStringDelivery.ejs', { delivery_days : product.delivery_within_days }) %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <% }) %>
+                </div>
+                <div class="cart-bill-order-box">
+                    <div class="cart-bill">
+                        <h3 class="bill-title">Price details</h3>
+                        <div class="bill-items-container">
+                            <div class="bill-item">
+                                <div class="bill-item-title">Price (<%= products.length %> items)</div>
+                                <span class="bill-item-value">&#8377;<%= priceDetails.priceOfItems %></span>
+                            </div>
+                            <div class="bill-item">
+                                <div class="bill-item-title">Discount</div>
+                                <span class="bill-item-value">-&#8377;<%= priceDetails.discount %></span>
+                            </div>
+                            <div class="bill-item">
+                                <div class="bill-item-title">Delivery Charges</div>
+                                <span class="bill-item-value">&#8377;<%= priceDetails.deliveryCharges %></span>
+                            </div>
+                            <div class="bill-item">
+                                <div class="bill-item-title">Secured packaging Fee</div>
+                                <span class="bill-item-value">&#8377;<%= priceDetails.packagingFee %></span>
+                            </div>
+                            <div class="total-amount">
+                                <div class="bill-item">
+                                    <div class="bill-item-title">Total Amount</div>
+                                    <span class="bill-item-value">&#8377;<%= priceDetails.totalAmount %></span>
+                                </div>
+                            </div>
+                            <div class="saving-on-order">
+                                <% if(priceDetails.totalSavings > 0){ %>
+                                <span>You will save &#8377;<%= priceDetails.totalSavings %> on this order.</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-order">
+                        <form action="/cart/checkout">
+                            <button type="submit" class="btn orderNow-btn mtb-16">
+                                Order now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <div class="empty-cart-container">
+                <img src="/assets/illustrations/emptyCart_illustrator.svg" class="empty-cart-img">
+                <h1 class="empty-cart-title">Cart is Empty!</h1>
+                <p class="empty-cart-suggestion">Add items to it now.</p>
+                <a href="/">
+                    <button type="submit" class="btn shop-now-btn">Shop Now</button>
+                </a>
+            </div>
+            <% } %>
+        </div>
+
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/product/cart.js"></script>
+</body>
+
+</html>

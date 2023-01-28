@@ -1,0 +1,166 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_products/view-product.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+
+        <div class="page-title-info mtb-8">
+            <h1 class="page-title">Product View</h1>
+            <p class="page-info">Seller can see the Product information here.</p>
+        </div>
+
+        <div class="product-info-container mtb-8">
+            <div class="info-img-field">
+                <div class="image">
+                    <img src="/<%= product.image %>" alt="product image">
+                </div>
+            </div>
+            <div class="info-field">
+                <h3>Product title</h3>
+                <p><%= product.title %></p>
+            </div>
+            <div class="info-field">
+                <h3>Product Category</h3>
+                <p><%= product.category %></p>
+            </div>
+            <% if(product.subcategory){ %>
+            <div class="info-field">
+                <h3>Product Sub category</h3>
+                <p><%= product.subcategory %></p>
+            </div>
+            <% } %>
+            <div class="info-field">
+                <h3>Maximum Retail Price (MRP)</h3>
+                <p><%= product.MRP %></p>
+            </div>
+            <div class="info-field">
+                <h3>Selling Price</h3>
+                <p><%= product.sellingPrice %></p>
+            </div>
+            <div class="info-field">
+                <h3>Discount Percentage (%)</h3>
+                <p><%= product.discount_percentage %>%</p>
+            </div>
+            <div class="info-field">
+                <h3>Product Quantity (Remaining)</h3>
+                <p><%= product.quantity %></p>
+            </div>
+            <div class="info-field">
+                <h3>Delivery will be done within</h3>
+                <p><%= product.delivery_within_days %> Days</p>
+            </div>
+            <div class="info-field">
+                <h3>Product Description</h3>
+                <p><%- include('../includes/helpers/lineBreaker.ejs', { textDescription: product.description } ); %></p>
+            </div>
+
+            <div class="ratings-bar mtb-16">
+                <span class="heading">Customer Ratings</span>
+                <span class="star <%= product.product_rating >= 1 ? 'checked': '' %>">&#9733;</span>
+                <span class="star <%= product.product_rating >= 2 ? 'checked': '' %>">&#9733;</span>
+                <span class="star <%= product.product_rating >= 3 ? 'checked': '' %>">&#9733;</span>
+                <span class="star <%= product.product_rating >= 4 ? 'checked': '' %>">&#9733;</span>
+                <span class="star <%= product.product_rating >= 5 ? 'checked': '' %>">&#9733;</span>
+                <p><span class="bold"><%= product.product_rating %></span> average rating based on <span class="bold"><%= product.product_ratedBy %></span> people reviews.</p>
+                <hr class="rating-divider">
+            
+                <div class="row" id="user-ratings" data-product-rated-by="<%= product.product_ratedBy %>">
+                    <div class="side">
+                        <div>5 star</div>
+                    </div>
+                    <div class="middle">
+                        <div class="bar-container">
+                            <div class="bar bar-5" id="bar-5" data-star5="<%= product.user_ratings.star_5 %>"></div>
+                        </div>
+                    </div>
+                    <div class="side right">
+                        <div><%= product.user_ratings.star_5 %></div>
+                    </div>
+                    <div class="side">
+                        <div>4 star</div>
+                    </div>
+                    <div class="middle">
+                        <div class="bar-container">
+                            <div class="bar bar-4" id="bar-4" data-star4="<%= product.user_ratings.star_4 %>"></div>
+                        </div>
+                    </div>
+                    <div class="side right">
+                        <div><%= product.user_ratings.star_4 %></div>
+                    </div>
+                    <div class="side">
+                        <div>3 star</div>
+                    </div>
+                    <div class="middle">
+                        <div class="bar-container">
+                            <div class="bar bar-3" id="bar-3" data-star3="<%= product.user_ratings.star_3 %>"></div>
+                        </div>
+                    </div>
+                    <div class="side right">
+                        <div><%= product.user_ratings.star_3 %></div>
+                    </div>
+                    <div class="side">
+                        <div>2 star</div>
+                    </div>
+                    <div class="middle">
+                        <div class="bar-container">
+                            <div class="bar bar-2" id="bar-2" data-star2="<%= product.user_ratings.star_2 %>"></div>
+                        </div>
+                    </div>
+                    <div class="side right">
+                        <div><%= product.user_ratings.star_2 %></div>
+                    </div>
+                    <div class="side">
+                        <div>1 star</div>
+                    </div>
+                    <div class="middle">
+                        <div class="bar-container">
+                            <div class="bar bar-1" id="bar-1" data-star1="<%= product.user_ratings.star_1 %>"></div>
+                        </div>
+                    </div>
+                    <div class="side right">
+                        <div><%= product.user_ratings.star_1 %></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="date-info-field">
+                <p>Created at : <%- include('../includes/helpers/getLocalStringCreatedAt.ejs') %></p>
+                <p>Last Updated at : <%- include('../includes/helpers/getLocalStringUpdatedAt.ejs') %></p>
+            </div>
+        </div>
+        <div class="reference mtb-8">
+            <a href="/manage-products/edit/<%= product._id %>" class="btn-link">
+                <button type="button" class="btn edit-prod-btn">
+                    <img src="/assets/icons/edit_icon_white.svg">
+                    <span>Edit Product</span>
+                </button>
+            </a>
+            <form action="/manage-products/delete/<%= product._id %>" method="post" class="btn-link" id="delete-product">
+                <button type="submit" class="btn delete-prod-btn">
+                    <img src="/assets/icons/delete_icon_white.svg">
+                    <span>Delete Product</span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageProducts/deleteProduct.js"></script>
+    <script src="/js/manageProducts/viewProduct.js"></script>
+</body>
+
+</html>

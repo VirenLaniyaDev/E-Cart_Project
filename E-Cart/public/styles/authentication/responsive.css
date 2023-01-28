@@ -1,0 +1,33 @@
+@media (max-width: 1250px) {
+    section .auth-sidebar img{
+        width: 100%;
+    }
+
+    section .auth-content .auth-form {
+        padding: 48px;
+        width  : 100%;
+    }
+}
+
+
+@media (max-width: 900px) {
+    section .auth-sidebar {
+        width: 100%;
+    }
+
+    section .auth-content {
+        position: absolute;
+        width   : 100%;
+    }
+
+    section .auth-content .auth-form {
+        background-color: #ffffffea;
+        border-radius   : 10px;
+    }
+}
+
+@media (max-width: 450px) {
+    section .auth-content .auth-form {
+        padding: 0.5rem;
+    }
+}

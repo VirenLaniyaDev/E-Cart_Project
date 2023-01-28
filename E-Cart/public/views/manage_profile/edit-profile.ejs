@@ -1,0 +1,119 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_profile/edit-profile.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+    
+    <main>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <a href="/profile" class="back-btn mtb-8">
+            Back 
+        </a>
+        <form action="/edit-profile" method="post" id="editProfile-form" enctype="multipart/form-data" novalidate>
+            <div class="profile-head-container mtb-8">
+                <div class="profile-img-name">
+                    <div class="profile-img-box tooltip">
+                        <label for="change-profile-img">
+                            <% if(user.profilePicture){ %>
+                                <img src="/<%= user.profilePicture %>" id="profile-picture">
+                            <% } else { %>
+                                <img src="/assets/images/user.png" id="profile-picture">
+                            <% } %>
+                        </label>
+                        <span class="tooltip-text">Profile Picture</span>
+                        <input type="file" accept="image/jpg, image/jpeg, image/webp, image/png" name="change_profile_img" id="change-profile-img" class="d-none">
+                    </div>
+                    <h1 class="profile-name"><%= user.name %></h1>
+                </div>
+                <div class="profile-manage-options">
+                    <a href="/change-password" class="btn-link">
+                        <button type="button" class="btn change-password-btn">
+                            <img src="/assets/icons/changePassword_icon_white.svg">
+                            <span>Change Password</span>
+                        </button>
+                    </a>
+                </div> 
+            </div>
+    
+            <% if(errorMessage.length > 0){ %>
+            <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+            <% } %>
+
+            <div class="profile-content-container">
+                <fieldset class="fieldset mtb-8">
+                    <legend class="fieldset-title">Personal details</legend>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="user-name" class="content-field-title">Name</label>
+                        <small class="input-error" id="user-name-err"></small>
+                        <input type="text" name="user_name" id="user-name" placeholder="Enter your name" value="<%= previousInput.user_name ? previousInput.user_name : user.name %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="user-email" class="content-field-title">Email</label>
+                        <small class="input-error" id="user-email-err"></small>
+                        <input 
+                            type="email" 
+                            name="user_email" 
+                            id="user-email"
+                            class="<%= validationErrors.find(err => err.param === 'user_email') ? 'invalid' : '' %>"
+                            placeholder="Enter your email" 
+                            value="<%= previousInput.user_email ? previousInput.user_email : user.email %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="user-mobile" class="content-field-title">Mobile</label>
+                        <small class="input-error" id="user-mobile-err"></small>
+                        <input 
+                            type="number" 
+                            name="user_mobile" 
+                            id="user-mobile"
+                            class="<%= validationErrors.find(err => err.param === 'user_mobile') ? 'invalid' : '' %>"
+                            placeholder="Enter your mobile" 
+                            value="<%= previousInput.user_mobile ? previousInput.user_mobile : user.mobile %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="user-gender" class="content-field-title">Gender</label>
+                        <small class="input-error" id="user-gender-err"></small>
+                        <select name="user_gender" id="user-gender">
+                            <% if(!user.gender){ %>
+                                <option value="">--- Select ---</option>
+                            <% } %>
+                            <%  let user_gender = previousInput.user_gender ? previousInput.user_gender : user.gender;
+                                let gender = ["male", "female", "other"];
+                                let gender_values = ["Male", "Female", "Other"];
+                                for(var i=0; i<gender.length; i++){ %>
+                                <% if(gender[i] == user_gender){ %>
+                                <option value="<%= gender[i] %>" selected><%= gender_values[i] %></option>
+                                <% } else { %>
+                                <option value="<%= gender[i] %>" ><%= gender_values[i] %></option> 
+                                <% }} %>
+                        </select>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset mtb-8">
+                    <legend class="fieldset-title">Other details</legend>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="address" class="content-field-title">Delivery address</label>
+                        <small class="input-error" id="address-err"></small>
+                        <textarea name="address" id="address" placeholder="Enter Address for delivery of package"><%= previousInput.address ? previousInput.address : user.address %></textarea>
+                    </div>
+                </fieldset>
+                <div class="submit-reset-container">
+                    <button type="reset" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Update profile</button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageProfile/editProfile.js"></script>
+</body>
+
+</html>

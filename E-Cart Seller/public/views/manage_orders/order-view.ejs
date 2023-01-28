@@ -1,0 +1,196 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_orders/order-view.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <a href="<%= returnTo ? returnTo : '/orders/order-requests' %>" class="back-btn mtb-8">
+            Back 
+        </a>
+        <div class="delivery-invoice-container mtb-16">
+            <div class="di-wrapper delivery-address-wrapper">
+                <h3 class="title">Deliver To:</h3>
+                <div class="di-content delivery-content">
+                    <div class="deliverTo strong"><%= order.user.name %></div>
+                    <div class="delivery-address">
+                        <%- include('../includes/helpers/lineBreaker.ejs', { textDescription : order.user.delivery_address }) %>
+                    </div>
+                </div>
+            </div>
+            <div class="di-wrapper">
+                <h3 class="title">Customer details</h3>
+                <div class="di-content">
+                    <div class="customer-detail-item">
+                        <span>Customer Name :</span>
+                        <span class="strong"><%= order.user.name %></span>
+                    </div>
+                    <div class="customer-detail-item">
+                        <span>Customer Mobile number :</span>
+                        <span class="strong"><%= order.user.mobile %></span>
+                    </div>
+                    <div class="customer-detail-item">
+                        <span>Customer Email :</span>
+                        <span class="strong"><%= order.user.email %></span>
+                    </div>
+                </div>
+            </div>
+            <% if(order.status == "Delivered"){ %>
+            <div class="di-wrapper invoice-wrapper">
+                <h3 class="title">Invoice</h3>
+                <div class="di-content invoice-content">
+                    <form action="/order/download-invoice" method="post">
+                        <input type="hidden" name="orderId" value="<%= order._id %>">
+                        <button type="submit" class="btn">Download Invoice</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div class="order-tracking-container mtb-16" data-order-status="<%= order.status %>">
+            <div class="order-tracking-wrapper">
+                <div class="order-tracking-content">
+                    <div class="order-tracking completed">
+                        <span class="is-complete"></span>
+                        <p>Ordered<br><span><%- include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.createdAt }) %></span></p>
+                    </div>
+                    <% if(order.status == "Cancelled"){ %>
+                    <div class="order-tracking">
+                        <span class="is-complete"></span>
+                        <p>Cancelled<br><span><%- order.cancelled_on ? include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.cancelled_on }) : ""%></span></p>
+                    </div>
+                    <% } else { %>
+                    <div class="order-tracking">
+                        <span class="is-complete"></span>
+                        <p>Shipped<br><span><%- order.shipped_on ? include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.shipped_on }) : ""%></span></p>
+                    </div>
+                    <% } %>
+                    <div class="order-tracking">
+                        <span class="is-complete"></span>
+                        <% if(order.status != "Cancelled"){ %>
+                        <p>
+                            <% if(order.status == "Delivered"){ %>
+                            Delivered
+                            <% } else { %>
+                            Delivery by,
+                            <% } %><br>
+                            <span><%- include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.delivery_on })%></span>
+                        </p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-container mtb-16">
+            <div class="order-item-container">
+                <div class="item-image">
+                    <a href="/manage-products/view/<%= order.product._id %>" class="product-url">
+                        <img src="/<%= order.product.image %>">
+                    </a>
+                </div>
+                <div class="item-info-wrapper">
+                    <div class="item-details">
+                        <a href="/manage-products/view/<%= order.product._id %>" class="product-url">
+                            <h4 class="product-title"><%= order.product.title %></h4>
+                        </a>
+                    </div>
+                    <div class="item-quantity-delivery">
+                        <div class="quantity-box">
+                            <span>Quantity : </span>
+                            <span class="quantity strong"><%= order.product.ordered_quantity %></span>
+                        </div>
+                        <div class="delivery">
+                            <div class="delivery-content">
+                                <% if(order.status == "Cancelled") { %>
+                                <span class="cancelled">Cancelled on,</span>
+                                <span class="strong"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.cancelled_on }) %></span>
+                                <% } else { %>
+                                <% if(order.status == "Delivered"){ %>
+                                <span class="delivered">Delivered on,</span>
+                                <% } else { %>
+                                <span>Delivery by,</span>
+                                <% } %>
+                                <span class="strong"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.delivery_on }) %></span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-price-info-container">
+                        <table class="order-price-table">
+                            <tr>
+                                <td class="price-title">Price of Item x Quantity</td>
+                                <td>&#8377;<%= order.orderAmount.priceAmount %></td>
+                            </tr>
+                            <tr>
+                                <td class="price-title">Delivery charges</td>
+                                <td>&#8377;<%= order.orderAmount.deliveryCharges %></td>
+                            </tr>
+                            <tr>
+                                <td class="price-title">Secured packaging fee</td>
+                                <td>&#8377;<%= order.orderAmount.packagingFee %></td>
+                            </tr>
+                            <tr>
+                                <td class="price-title">Total amount of Order</td>
+                                <td class="price">&#8377;<%= order.orderAmount.totalAmount %></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="payment-container">
+                        <span class="payment-title">Payment : </span>
+                        <span class="payment-status strong">
+                            <% if(order.payment_status == "Refunded"){ %>
+                                Refunded
+                            <% } else if(order.payment_status == "done"){ %>
+                                <% if(order.status == "Cancelled"){ %>
+                                Refund(Pending)
+                                <% } else { %>
+                                Done
+                                <% } %>
+                            <% } else { %>
+                                <% if(order.status == "Cancelled"){ %>
+                                Not done(COD)
+                                <% } else { %>
+                                Cash on Delivery
+                                <% } %>
+                            <% } %>
+                        </span>
+                    </div>                        
+                </div>
+            </div>
+        </div>
+        <div class="action-btn-container mtb-16">
+            <% if(order.status == "Ordered"){ %>
+            <form action="/cancel-order" method="post" id="cancel-order-form">
+                <input type="hidden" name="orderId" value="<%= order._id %>">
+                <button type="submit" class="btn cancel-order-btn">Cancel Order</button>
+            </form>
+            <form action="/ship-order" method="post" id="ship-order-form">
+                <input type="hidden" name="orderId" value="<%= order._id %>">
+                <button type="submit" class="btn">Ship order</button>
+            </form>
+            <% } else if(order.status == "Shipped"){ %>
+            <form action="/confirm-delivery" method="post">
+                <input type="hidden" name="orderId" value="<%= order._id %>">
+                <button type="submit" class="btn">Deliver Order</button>
+            </form>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageOrders/order-view.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+<% var date = new Date() %>
+<%= new Date(date.setDate(date.getDate() + delivery_days)).toLocaleString('en-US', { 
+    timeZone: 'Asia/Calcutta',
+    day: 'numeric',
+    weekday: 'long',
+    month: 'short',
+    year: 'numeric',
+    }); %>

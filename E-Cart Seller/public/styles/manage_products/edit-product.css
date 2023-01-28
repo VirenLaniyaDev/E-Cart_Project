@@ -1,0 +1,164 @@
+.mtb-8 {
+    margin: 8px 0;
+}
+
+.page-title-info::after {
+    display         : block;
+    content         : "";
+    width           : 100%;
+    height          : 2px;
+    border-radius   : 8px;
+    background-color: var(--secondary-clr);
+}
+
+.page-title-info .page-title {
+    margin     : 8px 0;
+    padding    : 0 8px;
+    font-size  : 32px;
+    font-weight: 500;
+}
+
+.page-title-info .page-info {
+    margin : 8px 0;
+    padding: 0 8px;
+}
+
+/********* Edit Product form container *********/
+.editProduct-form-container {
+    width          : 100%;
+    display        : flex;
+    justify-content: center;
+}
+
+.editProduct-form-container .editProduct-form {
+    width    : 100%;
+    max-width: 560px;
+}
+
+.editProduct-form .input-container,
+.editProduct-form .input-img-container {
+    margin: 14px 0;
+}
+
+.editProduct-form .input-container label,
+.editProduct-form .input-img-container label {
+    margin-bottom : 3px;
+    display       : inline-block;
+    font-size     : 14px;
+    font-weight   : 400;
+    letter-spacing: 1px;
+}
+
+.editProduct-form .input-container .input-error {
+    float     : right;
+    transform : translateY(8px);
+    font-size : 12px;
+    color     : var(--danger-clr);
+    transition: var(--primary-transition-time-sec);
+    visibility: hidden;
+}
+
+.editProduct-form .input-img-container #uploaded-img {
+    font-size: 13px;
+}
+
+.editProduct-form .input-container input,
+.editProduct-form .input-container select,
+.editProduct-form .input-img-container input {
+    padding         : 6px 12px;
+    width           : 100%;
+    outline         : none;
+    border          : 2px solid var(--bg-light);
+    border-radius   : 8px;
+    font-size       : 16px;
+    font-weight     : 300;
+    letter-spacing  : 1px;
+    background-color: var(--bg-light);
+    transition      : var(--primary-transition-time-sec);
+}
+
+.editProduct-form .input-container input:hover,
+.editProduct-form .input-img-container input:hover {
+    background-color: #ffffff;
+    border          : 2px solid var(--secondary-clr);
+}
+
+.editProduct-form .input-container input:focus,
+.editProduct-form .input-img-container input:hover {
+    border          : 2px solid var(--primary-clr);
+    background-color: #ffffff;
+}
+
+.editProduct-form .input-container .invalid {
+    border: 2px solid var(--danger-clr) !important;
+}
+
+/* Textarea */
+.editProduct-form .input-container #prod_description {
+    padding         : 6px 12px;
+    width           : 100%;
+    max-width       : 100%;
+    min-width       : 100%;
+    min-height      : 200px;
+    outline         : none;
+    font-size       : 14px;
+    border          : 2px solid var(--bg-light);
+    border-radius   : 8px;
+    background-color: var(--bg-light);
+    letter-spacing  : 1px;
+    transition      : var(--primary-transition-time-sec);
+}
+
+.editProduct-form .input-container #prod_description:hover {
+    border          : 2px solid var(--secondary-dark-clr);
+    background-color: #ffffff;
+}
+
+.editProduct-form .input-container #prod_description:focus {
+    border          : 2px solid var(--primary-clr);
+    background-color: #ffffff;
+}
+
+/* Submit and reset */
+.submit-reset-container .submit-btn {
+    margin          : 8px 0;
+    width           : 300px;
+    height          : 48px;
+    font-size       : 15px;
+    border          : none;
+    border-radius   : 8px;
+    color           : #ffffff;
+    background-color: var(--primary-clr);
+    transition      : var(--primary-transition-time-sec);
+}
+
+.submit-reset-container .submit-btn:hover {
+    font-size : 16px;
+    box-shadow: 0 0 5px var(--secondary-dark-clr);
+}
+
+.submit-reset-container .reset-btn {
+    background-color: #ffffff;
+    padding         : 6px 12px;
+    display         : block;
+    font-size       : 14px;
+    border-radius   : 8px;
+    border          : 2px solid var(--primary-clr);
+    transition      : var(--secondary-transition-time-sec);
+}
+
+.submit-reset-container .reset-btn:hover {
+    background-color: var(--bg-light);
+}
+
+/********* Responsive (Media query) *********/
+@media (max-width: 560px) {
+    .submit-reset-container .submit-btn {
+        width: 100%;
+    }
+
+    .editProduct-form .input-container input,
+    .editProduct-form .input-container select {
+        font-size: 14px;
+    }
+}

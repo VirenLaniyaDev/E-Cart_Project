@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %> | E-Cart</title>
+    <link rel="stylesheet" href="/styles/root.css">
+    <link rel="stylesheet" href="/styles/authentication/style.css">
+    <link rel="stylesheet" href="/styles/authentication/responsive.css">
+    <link rel="stylesheet" href="/styles/forIncludes/popups.css">
+    <style>
+        .pop-up-container{
+            position: initial;
+            top:0;
+            padding:12px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="auth-sidebar">
+            <img src="/assets/illustrations/signup_illustrator.svg" alt="Welcome to E-Cart">
+        </div>
+        <div class="auth-content">
+            <form action="/signup" method="post" id="auth-form" class="auth-form" novalidate>
+                <h2>Sign up To E-Cart</h2>
+                <div class="input-container">
+                    <button type="button" class="auth-btn cont-with-google">
+                        <div class="social-media-logo google-logo"></div>
+                        <p>Continue with Google</p>
+                    </button>
+                </div>
+                <!-- OR separator -->
+                <div class="or-separator">or</div>
+                <% if(errorMessage.length > 0){ %>
+                <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+                <% } %>
+                <% if(successMessage.length > 0){ %>
+                <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+                <% } %>
+                <% if(warningMessage.length > 0){ %>
+                <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+                <% } %>
+                <div class="input-container">
+                    <label for="uname">Username</label>
+                    <small class="input-error" id="uname-err"></small>
+                    <input type="text" name="uname" id="uname" placeholder="Enter your name" value="<%= previousInput.uname %>">
+                </div>
+                <div class="input-container">
+                    <label for="email">Email</label>
+                    <small class="input-error" id="email-err"></small>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        class="<%= validationErrors.find(err => err.param === 'email') ? 'invalid':'' %>"
+                        placeholder="Enter email" 
+                        value="<%= previousInput.email %>">
+                </div>
+                <div class="input-container">
+                    <label for="password">Password</label>
+                    <small class="input-error" id="password-err"></small>
+                    <input type="password" name="password" id="password" placeholder="Enter password" value="<%= previousInput.password %>">
+                </div>
+                <div class="input-container">
+                    <label for="conf-password">Confirm Password</label>
+                    <small class="input-error" id="confPass-err"></small>
+                    <input type="password" name="conf-password" id="confPassword" placeholder="Confirm your password" value="<%= previousInput.password %>">
+                </div>
+                <div class="check">
+                    <label><input type="checkbox" id="agreement">Agree with all <a href="#" id="terms-conditions">terms and
+                        conditions</a>.</label>
+                </div>
+                <div class="input-container">
+                    <button type="submit" class="auth-submit-btn">Sign up</button>
+                </div>
+                <div class="input-container">
+                    <p>Already have an account? <a href="/login">Sign in</a></p>
+                </div>
+                <a href="/" class="back-to-home">
+                    Back
+                </a>
+            </form>
+        </div>
+    </section>
+
+    <script src="/js/authentication/signupValidation.js"></script>
+    <script src="/js/includes/popups.js"></script>
+</body>
+
+</html>

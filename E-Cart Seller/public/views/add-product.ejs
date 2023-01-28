@@ -1,0 +1,96 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/add-product.css">
+</head>
+
+<body>
+    <%- include('includes/header.ejs') %>
+    
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('./includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('./includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('./includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+
+        <div class="page-title-info mtb-8">
+            <h1 class="page-title">Add Product</h1>
+            <p class="page-info">Seller can add their products here in order to sell.</p>
+        </div>
+        
+        <div class="addProduct-form-container mtb-8">
+            <form action="/add-product" method="post" enctype="multipart/form-data" id="addProduct-form" class="addProduct-form"
+                novalidate>
+                <div class="input-container">
+                    <label for="prod_title">Product title</label>
+                    <small class="input-error" id="prod_title-err"></small>
+                    <input type="text" name="prod_title" id="prod_title" placeholder="Enter Product title">
+                </div>
+                <div class="input-container">
+                    <label for="prod_categories">Product Category</label>
+                    <small class="input-error" id="prod_categories-err"></small>
+                    <select name="prod_categories" id="prod_categories">
+                        <option value="select">Select Product Category</option>
+                        <option value="mobiles">Mobile</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="books">Book</option>
+                        <option value="toys">Toys</option>
+                        <option value="appliance">Appliance</option>
+                    </select>
+                </div>
+                <div class="input-container d-none" id="prod_subCategories-container">
+                    <label for="prod_subCategories">Select Product SubCategory</label>
+                    <small class="input-error" id="prod_name-err"></small>
+                    <select name="prod_subCategories" id="prod_subCategories"></select>
+                </div>
+                <div class="input-container">
+                    <label for="prod_mrp">Maximum retail price(MRP)</label>
+                    <small class="input-error" id="prod_mrp-err"></small>
+                    <input type="number" name="prod_mrp" id="prod_mrp" placeholder="Enter Maximum retail price(MRP) of Product">
+                </div>
+                <div class="input-container">
+                    <label for="prod_sellingPrice">Selling price</label>
+                    <small class="input-error" id="prod_sellingPrice-err"></small>
+                    <input type="number" name="prod_sellingPrice" id="prod_sellingPrice"
+                        placeholder="Enter Selling price of Product">
+                </div>
+                <div class="input-container">
+                    <label for="prod_quantity">Quantity</label>
+                    <small class="input-error" id="prod_quantity-err"></small>
+                    <input type="number" name="prod_quantity" id="prod_quantity" placeholder="Enter Product Quantity for sell">
+                </div>
+                <div class="input-container">
+                    <label for="prod_image">Product Image (.jpg/.jpeg/.webp/.png)</label>
+                    <small class="input-error" id="prod_image-err"></small>
+                    <input type="file" accept="image/jpg, image/jpeg, image/webp, image/png" max-size="2000" name="prod_image" id="prod_image">
+                </div>
+                <div class="input-container">
+                    <label for="prod_delivery">Delivery to client within (1-10 days)</label>
+                    <small class="input-error" id="prod_delivery-err"></small>
+                    <input type="number" name="prod_delivery" id="prod_delivery" placeholder="Enter days for product delivery">
+                </div>
+                <div class="input-container">
+                    <label for="prod_description">Product description</label>
+                    <small class="input-error" id="prod_description-err"></small>
+                    <textarea name="prod_description" id="prod_description" placeholder="Enter product description"></textarea>
+                </div>
+                <div class="submit-reset-container">
+                    <button type="reset" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+
+    <%- include('includes/scripts.ejs') %>
+    <script src="/js/addProduct/selectCategory.js"></script>
+    <script src="/js/addProduct/addProductValidation.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+.m-8 {
+  margin: 8px 0;
+}
+
+/********* Categories *********/
+.categories-container {
+  display         : flex;
+  flex-direction  : row;
+  justify-content : center;
+  background-color: var(--bg-light);
+}
+
+.category {
+  position       : relative;
+  width          : 128px;
+  height         : 128px;
+  display        : flex;
+  flex-direction : column;
+  justify-content: space-evenly;
+  align-items    : center;
+  z-index        : 1;
+  text-decoration: none;
+  color          : #000000;
+  transition     : var(--secondary-transition-time-sec);
+}
+
+.category:hover {
+  background-color: var(--secondary-clr);
+}
+
+.category img {
+  width : 64px;
+  height: 64px;
+}
+
+.category-detail {
+  display        : flex;
+  flex-direction : row;
+  justify-content: space-between;
+  align-items    : center;
+}
+
+.category-detail img {
+  width     : 16px;
+  height    : 16px;
+  transition: var(--secondary-transition-time-sec);
+}
+
+.category:hover .category-detail img {
+  transform: rotate(180deg);
+}
+
+.category .sub-categories-container {
+  position        : absolute;
+  top             : 100%;
+  width           : 200%;
+  max-height      : 0px;
+  overflow        : hidden;
+  border-radius   : 8px;
+  background-image: linear-gradient(to left top, #ffffffe4, #ffffff);
+}
+
+.sub-categories-list a {
+  color          : #000000;
+  text-decoration: none;
+}
+
+.sub-categories-list li {
+  padding     : 8px 0;
+  padding-left: 16px;
+  list-style  : none;
+  transition  : var(--secondary-transition-time-sec);
+}
+
+.sub-categories-list li:hover {
+  background-color: var(--secondary-dark-clr);
+}
+
+.category:hover .sub-categories-container {
+  max-height: fit-content;
+}
+
+
+/********* Slider *********/
+.main-slider {
+  width  : 100%;
+  height : 480px;
+  z-index: 0;
+}
+
+.main-slider .swiper-slide img {
+  width : 100%;
+  height: 100%;
+}
+
+.main-slider .swiper-button-prev,
+.main-slider .swiper-button-next {
+  color: var(--secondary-clr);
+}
+
+.main-slider .swiper-pagination-bullet-active {
+  background-color: var(--secondary-clr);
+}
+
+/********* Suggestions *********/
+
+.separator-hr {
+  margin          : 8px 0;
+  width           : 100%;
+  border          : 0;
+  height          : 1px;
+  background-color: var(--secondary-clr);
+}
+
+.card-container-wrapper {
+  height          : fit-content;
+  padding         : 16px;
+  background-color: var(--bg-light);
+}
+
+.card-container-wrapper .cc-title {
+  font-weight: 600;
+}
+
+/*** Card Swiper ***/
+.card-container {
+  max-width: 1120px;
+  width    : 100%;
+  padding  : 8px 0;
+}
+
+.card-slide-container {
+  margin  : 0 32px;
+  overflow: visible;
+}
+
+.card {
+  position       : relative;
+  display        : block;
+  height         : 294px;
+  text-decoration: none;
+  border-radius  : 8px;
+  background     : #fff;
+  box-shadow     : 0 0 8px #bdbdbd;
+  transition     : var(--primary-transition-time-sec) ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 8px var(--secondary-clr);
+}
+
+.card .image-box {
+  padding: 16px 16px 0;
+  height : 144px;
+}
+
+.card .image-box img {
+  width     : 100%;
+  height    : 100%;
+  object-fit: contain;
+}
+
+.card .product-details {
+  padding: 16px 12px;
+}
+
+.product-details .product-title {
+  font-weight: 500;
+  color      : #000000;
+  transition : var(--secondary-transition-time-sec) ease;
+}
+
+.card:hover .product-details .product-title {
+  color: var(--secondary-dark-clr);
+}
+
+.product-discount-price {
+  position  : absolute;
+  bottom    : 0;
+  margin-top: 4px;
+}
+
+.product-discount-price .product-discount-ratings {
+  display    : flex;
+  column-gap : 8px;
+  align-items: center;
+}
+
+.product-discount-ratings .label {
+  padding         : 0 8px;
+  width           : fit-content;
+  font-size       : 15px;
+  font-weight     : 500;
+  border-radius   : 8px;
+  color           : #ffffff;
+  background-color: var(--secondary-dark-clr);
+}
+
+.product-discount-ratings .ratings-wrapper {
+  display    : flex;
+  align-items: center;
+  column-gap : 4px;
+}
+
+.product-discount-ratings .bg-success {
+  background-color: var(--success-clr) !important;
+}
+
+.product-discount-ratings .bg-danger {
+  background-color: var(--danger-clr) !important;
+}
+
+.product-details .price {
+  font-weight: 500;
+  color      : #4d4d4d;
+  padding    : 4px 0;
+}
+
+.swiper-navBtn {
+  height       : 40px;
+  width        : 40px;
+  border-radius: 50%;
+  box-shadow   : 0 0 4px #bababa;
+  color        : var(--secondary-dark-clr);
+  background   : #ffffff;
+}
+
+.swiper-navBtn::before,
+.swiper-navBtn::after {
+  font-size: 18px;
+}
+
+/********* Responsive (Media query) *********/
+@media (max-width: 990px) {
+  main {
+    margin: 0;
+  }
+}
+
+@media(max-width:750px) {
+  .category {
+    display: none;
+  }
+
+  .main-slider {
+    height: 240px;
+  }
+}

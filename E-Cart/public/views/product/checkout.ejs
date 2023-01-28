@@ -1,0 +1,225 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/product/checkout.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="checkout-container mtb-8">
+            <% if( products.length > 0 ){ %>
+            <div class="checkout-wrapper">
+                <div class="checkout-content">
+                    <!-- 1. Mobile Verification -->
+                    <div class="mobile-container verification-field-container">
+                        <div class="status">1</div>
+                        <div class="mobile-wrapper field-wrapper">
+                            <div class="field-title">Mobile</div>
+                            <div class="mobile"><%= user.mobile %></div>
+                            <div class="input-container d-none" id="change-mobile-form">
+                                <form action="/change-mobile" method="post" id="changeMobile-form">
+                                    <small class="input-error" id="mobile-err"></small>
+                                    <input type="number" name="mobile" id="mobile_inputField" placeholder="Enter Mobile number">
+                                    <div class="save-cancel-btn">
+                                        <button type="submit" class="btn">Save Mobile</button>
+                                        <% if(user.mobile && (user.mobile.length > 0)){ %>
+                                        <button type="button" class="cancel-btn" id="cancel-mobile-btn">Cancel</button>
+                                        <% } %>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="change-box" id="changeMobile-btnBox">
+                            <% if(user.mobile && (user.mobile.length > 0)){ %>
+                            <button type="button" class="btn change-btn" id="change-mobile-btn">Change</button>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <!-- 2. Delivery address verification -->
+                    <div class="delivery-address-container verification-field-container mtb-16">
+                        <div class="status">2</div>
+                        <div class="delivery_address-wrapper field-wrapper">
+                            <span>Deliver To : </span>
+                            <span class="userName"><%= user.name %></span>
+                            <address class="address"><%= user.address %></address>
+                            <div class="input-container d-none" id="change-address-form">
+                                <form action="/change-address" method="post" id="changeAdd-form">
+                                    <small class="input-error" id="delivery_address-err"></small>
+                                    <textarea name="delivery_address" id="delivery_address-textarea" placeholder="Enter address for delivery"><%= user.address %></textarea>
+                                    <div class="save-cancel-btn">
+                                        <button type="submit" class="btn">Save Address</button>
+                                        <% if(user.address && (user.address.length > 0)){ %>
+                                        <button type="button" class="cancel-btn" id="cancel-address-btn">Cancel</button>
+                                        <% } %>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="continue">
+                                <button type="button" class="btn" id="deliverAndContinue-btn">Deliver here and continue</button>
+                            </div>
+                        </div>
+                        <div class="change-box" id="changeAddress-btnBox">
+                            <% if(user.address && (user.address.length > 0)){ %>
+                            <button type="button" class="btn change-btn" id="change-add-btn">Change</button>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <!-- 3. Order summary -->
+                    <div class="order-summary-container verification-field-container mtb-16">
+                        <div class="status">3</div>
+                        <img src="/assets/icons/down_icon_black.svg" class="dropdown">
+                        <span>Your order summary</span>
+                    </div>
+                    <div class="cart-items-wrapper d-none">
+                        <% products.forEach( product => { %>
+                        <div class="cart-item-container">
+                            <a href="/product/<%= product._id %>" class="product-url">
+                                <div class="item-image">
+                                    <img src="/<%= product.image %>">
+                                </div>
+                            </a>
+                            <div class="item-info-wrapper">
+                                <div class="item-details">
+                                    <a href="/product/<%= product._id %>" class="product-url">
+                                        <h4 class="product-title"><%= product.title %></h4>
+                                    </a>
+                                    <small class="product-seller">Seller : <%= product.seller.business_name %></small>
+                                    <% if(product.quantity <= 0){ %>
+                                    <small class="stock danger-stock">Unavailable</small>
+                                    <% } else { %>
+                                    <small class="stock success-stock">In Stock</small>
+                                    <% } %>
+                                    <div class="price-discount-info">
+                                        <span class="price">&#8377;<%= product.sellingPrice %></span>
+                                        <% if(product.discount_percentage > 0){ %>
+                                        <span class="mrp"><del>&#8377;<%= product.MRP %></del></span>
+                                        <span class="discount_percentage"><%= product.discount_percentage %>% Off</span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="item-quantity-delivery">
+                                    <div class="quantity-box">
+                                        <span>
+                                            <form action="/checkout/decrease-prod-quantity" method="post">
+                                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                                <button type="submit" class="qnt-btn decrement-qnt">-</button>
+                                            </form>
+                                        </span>
+                                        <span class="quantity"><%= product.cp_quantity %></span>
+                                        <span>
+                                            <form action="/checkout/increment-prod-quantity" method="post">
+                                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                                <button type="submit" class="qnt-btn increment-qnt">+</button>
+                                            </form>
+                                        </span>
+                                        <span class="remove-product">
+                                            <form action="/checkout/remove-product" method="post">
+                                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                                <button type="submit" class="btn remove-prod-btn">Remove</button>
+                                            </form>
+                                        </span>
+                                    </div>
+                                    <div class="delivery-by">
+                                        <div class="delivery-by-content">
+                                            <span>Delivery by,</span>
+                                            <span class="bold"><%- include('../includes/helpers/getLocalStringDelivery.ejs', { delivery_days : product.delivery_within_days }) %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <% }) %>
+                        <div class="continue mtb-16">
+                            <button type="button" class="btn" id="orderReviewed-btn">Continue</button>
+                        </div>
+                    </div>
+                    <!-- 4. Payment options -->
+                    <div class="payment-option-container verification-field-container">
+                        <div class="status">4</div>
+                        <div class="field-title">Payment option</div>
+                        <div class="input-payment-option">
+                            <input type="radio" name="paymentOption" id="cod" value="cod"><label for="cod">Cash on Delivery (COD)</label>
+                        </div>
+                        <div class="input-payment-option">
+                            <input type="radio" name="paymentOption" id="online" value="online"><label for="online">Online Payment</label>
+                        </div>
+                    </div>
+                    <div class="verification-guide mtb-16">** Please verify details to place your order. </div>
+                </div>
+
+                <!-- Order Bill -->
+                <div class="checkout-bill-order-box">
+                    <div class="checkout-bill">
+                        <h3 class="bill-title">Price details</h3>
+                        <div class="bill-items-container">
+                            <div class="bill-item">
+                                <div class="bill-item-title">Price (<%= products.length %> items)</div>
+                                <span class="bill-item-value">&#8377;<%= priceDetails.priceOfItems %></span>
+                            </div>
+                            <div class="bill-item">
+                                <div class="bill-item-title">Discount</div>
+                                <span class="bill-item-value">-&#8377;<%= priceDetails.discount %></span>
+                            </div>
+                            <div class="bill-item">
+                                <div class="bill-item-title">Delivery Charges</div>
+                                <span class="bill-item-value">&#8377;<%= priceDetails.deliveryCharges %></span>
+                            </div>
+                            <div class="bill-item">
+                                <div class="bill-item-title">Secured packaging Fee</div>
+                                <span class="bill-item-value">&#8377;<%= priceDetails.packagingFee %></span>
+                            </div>
+                            <div class="total-amount">
+                                <div class="bill-item">
+                                    <div class="bill-item-title">Total Amount</div>
+                                    <span class="bill-item-value">&#8377;<%= priceDetails.totalAmount %></span>
+                                </div>
+                            </div>
+                            <div class="saving-on-order">
+                                <% if(priceDetails.totalSavings > 0){ %>
+                                <span>You will save &#8377;<%= priceDetails.totalSavings %> on this order.</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-order mtb-16">
+                        <form action="/place-order" method="post">
+                            <input type="hidden" name="paymentMethod" id="inputPaymentMethod">
+                            <button type="submit" class="btn placeOrder-btn d-none">
+                                Place order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <div class="empty-cart-container">
+                <img src="/assets/illustrations/emptyCart_illustrator.svg" class="empty-cart-img">
+                <h1 class="empty-cart-title">No products for Order!</h1>
+                <p class="empty-cart-suggestion">Add items to cart now.</p>
+                <a href="/">
+                    <button type="submit" class="btn shop-now-btn">Shop Now</button>
+                </a>
+            </div>
+            <% } %>
+        </div>
+
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/product/checkout.js"></script>
+</body>
+
+</html>

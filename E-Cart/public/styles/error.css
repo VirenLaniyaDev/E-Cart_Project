@@ -1,0 +1,23 @@
+.mtb-16 {
+    margin: 16px 0;
+}
+
+.error-container {
+    width           : 100%;
+    height          : 524px;
+    display         : flex;
+    flex-direction  : column;
+    justify-content : center;
+    align-items     : center;
+    row-gap         : 16px;
+    background-color: var(--bg-light);
+}
+
+.error img {
+    width: 300px;
+}
+
+.action-btn-container .btn {
+    padding-left : 32px;
+    padding-right: 32px;
+}

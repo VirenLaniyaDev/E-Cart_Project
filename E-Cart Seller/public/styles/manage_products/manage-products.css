@@ -1,0 +1,118 @@
+.mtb-8 {
+    margin: 8px 0;
+}
+
+.page-title-info::after {
+    display         : block;
+    content         : "";
+    width           : 100%;
+    height          : 2px;
+    border-radius   : 8px;
+    background-color: var(--secondary-clr);
+}
+
+.page-title-info .page-title {
+    margin     : 8px 0;
+    padding    : 0 8px;
+    font-size  : 32px;
+    font-weight: 500;
+}
+
+.page-title-info .page-info {
+    margin : 8px 0;
+    padding: 0 8px;
+}
+
+/********* Product table *********/
+.table-container {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.table {
+    width          : 100%;
+    min-width      : 1200px;
+    border-collapse: collapse;
+}
+
+.table tr:nth-child(odd) {
+    background-color: var(--bg-light);
+}
+
+.table tr:nth-child(even) {
+    background-color: var(--whiteSmoke-clr);
+}
+
+.table td,
+.table th {
+    padding   : 4px 2px;
+    text-align: start;
+    border    : 2px solid #fff;
+}
+
+.table th {
+    padding: 8px 2px;
+    font-weight     : 500;
+    background-color: var(--primary-clr);
+    color           : #fff;
+}
+
+/* Operations container */
+.operation {
+    display: inline-block;
+    margin : 2px 0;
+    width  : 30%;
+}
+
+.operation-btn {
+    width        : 100%;
+    height       : 32px;
+    border       : none;
+    border-radius: 8px;
+}
+
+.operation-btn:hover {
+    cursor: pointer;
+    border: 1px solid var(--primary-clr);
+}
+
+.operation-btn img {
+    width         : 20px;
+    height        : 20px;
+    vertical-align: middle;
+    transition    : var(--secondary-transition-time-sec);
+}
+
+.operation-btn:hover img {
+    width : 24px;
+    height: 24px;
+}
+
+.viewOp {
+    background-color: var(--secondary-clr);
+}
+
+.editOp {
+    background-color: var(--primary-clr);
+}
+
+.deleteOp {
+    background-color: var(--danger-clr);
+}
+
+.btn-link{
+    text-decoration: none;
+}
+
+/* For no products */
+.not-found{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 8px;
+}
+
+.not-found .title{
+    font-weight: 500;
+}

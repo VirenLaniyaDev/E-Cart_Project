@@ -1,0 +1,99 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_products/edit-product.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+
+        <div class="page-title-info mtb-8">
+            <h1 class="page-title">Edit Product</h1>
+            <p class="page-info">Seller can edit their product details here.</p>
+        </div>
+        
+        <div class="editProduct-form-container mtb-8">
+            <form action="/manage-products/edit/<%= product._id %>" method="post" enctype="multipart/form-data" id="editProduct-form" class="editProduct-form"
+                novalidate>
+                <div class="input-container">
+                    <label for="prod_title">Product title</label>
+                    <small class="input-error" id="prod_title-err"></small>
+                    <input type="text" name="prod_title" id="prod_title" placeholder="Enter Product title" value="<%= product.title %>">
+                </div>
+                <div class="input-container">
+                    <label for="prod_categories">Product Category</label>
+                    <small class="input-error" id="prod_categories-err"></small>
+                    <select name="prod_categories" id="prod_categories">
+                        <option value="select" >Select Product Category</option>
+                    <%  let categories = ["mobiles", "electronics", "fashion", "books", "toys", "appliance"];
+                        let categories_value = ["Mobile", "Electronics", "Fashion", "Book", "Toys", "Appliance"];
+                        for(var i=0; i<categories.length; i++){ %>
+                            <% if(categories[i] ==  product.category){ %>
+                            <option value="<%= categories[i] %>" selected><%= categories_value[i] %></option>
+                            <% } else { %>
+                            <option value="<%= categories[i] %>" ><%= categories_value[i] %></option> 
+                            <% } %>
+                    <% } %>
+                    </select>
+                </div>
+                <div class="input-container" id="prod_subCategories-container">
+                    <label for="prod_subCategories">Select Product SubCategory</label>
+                    <small class="input-error" id="prod_name-err"></small>
+                    <select name="prod_subCategories" id="prod_subCategories" data-subcategory="<%= product.subcategory %>"></select>
+                </div>
+                <div class="input-container">
+                    <label for="prod_mrp">Maximum retail price(MRP)</label>
+                    <small class="input-error" id="prod_mrp-err"></small>
+                    <input type="number" name="prod_mrp" id="prod_mrp" placeholder="Enter Maximum retail price(MRP) of Product" value="<%= product.MRP %>">
+                </div>
+                <div class="input-container">
+                    <label for="prod_sellingPrice">Selling price</label>
+                    <small class="input-error" id="prod_sellingPrice-err"></small>
+                    <input type="number" name="prod_sellingPrice" id="prod_sellingPrice"
+                        placeholder="Enter Selling price of Product" value="<%= product.sellingPrice %>">
+                </div>
+                <div class="input-container">
+                    <label for="prod_quantity">Quantity</label>
+                    <small class="input-error" id="prod_quantity-err"></small>
+                    <input type="number" name="prod_quantity" id="prod_quantity" placeholder="Enter Product Quantity for sell" value="<%= product.quantity %>">
+                </div>
+                <div class="input-img-container">
+                    <label for="prod_image">Product Image (.jpg/.jpeg/.webp/.png)</label>
+                    <p id="uploaded-img">Uploaded : <%= product.image.substring(product.image.indexOf('_-_')+3) %></p>
+                    <small class="input-error" id="prod_image-err"></small>
+                    <input type="file" accept="image/jpg, image/jpeg, image/webp, image/png" max-size="2000" name="prod_image" id="prod_image">
+                </div>
+                <div class="input-container">
+                    <label for="prod_delivery">Delivery to client within (1-10 days)</label>
+                    <small class="input-error" id="prod_delivery-err"></small>
+                    <input type="number" name="prod_delivery" id="prod_delivery" placeholder="Enter days for product delivery" value="<%= product.delivery_within_days %>">
+                </div>
+                <div class="input-container">
+                    <label for="prod_description">Product description</label>
+                    <small class="input-error" id="prod_description-err"></small>
+                    <textarea name="prod_description" id="prod_description" placeholder="Enter product description"><%= product.description %></textarea>
+                </div>
+                <div class="submit-reset-container">
+                    <button type="submit" class="submit-btn">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageProducts/selectCategory.js"></script>
+    <script src="/js/manageProducts/editProduct.js"></script>
+</body>
+
+</html>

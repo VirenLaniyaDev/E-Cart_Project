@@ -1,0 +1,56 @@
+.d-none{
+    display: none !important;
+}
+
+/****** Popups ******/
+.pop-up-container {
+    position     : sticky;
+    top          : 86px;
+    left         : 0;
+    padding      : 16px;
+    margin-bottom: 16px;
+    width        : 100%;
+    display      : flex;
+    align-items  : center;
+    border-radius: 8px;
+    transition   : var(--primary-transition-time-sec) ease;
+    z-index      : 1;
+}
+
+.pop-up-container .info {
+    width: 100%;
+}
+
+.close-popup-btn {
+    width           : 24px;
+    height          : 24px;
+    border          : none;
+    border-radius   : 50%;
+    background-color: transparent;
+    transition      : var(--secondary-transition-time-sec);
+}
+
+.close-popup-btn img {
+    width : 100%;
+    height: 100%;
+}
+
+.close-popup-btn:hover {
+    transform: scale(1.2);
+}
+
+/*** Success popup theme ***/
+.success {
+    color           : #0f5132;
+    background-color: #d5ffedf9;
+}
+
+.danger {
+    color           : var(--danger-clr);
+    background-color: #ffddddf7;
+}
+
+.warning {
+    color           : #ffc107;
+    background-color: #ffeec1f6;
+}

@@ -1,0 +1,136 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_orders/confirm-delivery.css">
+    </head>
+
+    <body>
+
+        <%- include('../includes/header.ejs') %>
+
+        <main>
+            <section class="mtb-16">
+                <div class="order-details-container">
+                    <div class="order-details-wrapper">
+                        <div class="order-detail-box mtb-16">
+                            <div class="order-detail">
+                                <h3 class="title">Deliver To:</h3>
+                                <div class="info">
+                                    <div class="strong">
+                                        <%= order.user.name %>
+                                    </div>
+                                    <div><%- include('../includes/helpers/lineBreaker.ejs', { textDescription : order.user.delivery_address }) %></div>
+                                </div>
+                            </div>
+                            <div class="order-detail">
+                                <h3 class="title">Customer details</h3>
+                                <div class="info">
+                                    <div class="info-field">
+                                        <span>Customer Name : </span>
+                                        <span class="strong"><%= order.user.name %></span>
+                                    </div>
+                                    <div class="info-field">
+                                        <span>Customer Mobile : </span>
+                                        <span class="strong"><%= order.user.mobile %></span>
+                                    </div>
+                                    <div class="info-field">
+                                        <span>Customer Email : </span>
+                                        <span class="strong"><%= order.user.email %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-detail-box mtb-16">
+                            <div class="order-detail">
+                                <h3 class="title">Product</h3>
+                                <div class="info"><%= order.product.title %></div>
+                            </div>
+                        </div>
+                        <div class="order-detail-box mtb-16">
+                            <div class="order-detail">
+                                <h3 class="title">Product quantity</h3>
+                                <div class="info"><%= order.product.ordered_quantity %></div>
+                            </div>
+                            <div class="order-detail payment-detail">
+                                <h3 class="title">Payment</h3>
+                                <div class="info"><%= order.payment_status=="done" ? "Done" : "Cash on Delivery" %></div>
+                            </div>
+                        </div>
+                        <div class="order-detail-box mtb-16">
+                            <table class="order-price-table">
+                                <tr>
+                                    <td class="price-title">Price of Item x Quantity</td>
+                                    <td>&#8377;<%= order.orderAmount.priceAmount %></td>
+                                </tr>
+                                <tr>
+                                    <td class="price-title">Delivery charges</td>
+                                    <td>&#8377;<%= order.orderAmount.deliveryCharges %></td>
+                                </tr>
+                                <tr>
+                                    <td class="price-title">Secured packaging fee</td>
+                                    <td>&#8377;<%= order.orderAmount.packagingFee %></td>
+                                </tr>
+                                <tr>
+                                    <td class="price-title">Total amount of Order</td>
+                                    <td class="price">&#8377;<%= order.orderAmount.totalAmount %></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="order-detail-box mtb-16">
+                            <div class="order-detail">
+                                <h3 class="title">Date of Placing order</h3>
+                                <div class="info"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.createdAt }) %></div>
+                            </div>
+                            <div class="order-detail">
+                                <h3 class="title">Date of Shipping order</h3>
+                                <div class="info"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.shipped_on }) %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="confirm-delivery-container">
+                    <div class="confirm-delivery-wrapper">
+                        <% if(errorMessage.length > 0){ %>
+                        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+                        <% } %>
+                        <% if(successMessage.length > 0){ %>
+                        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+                        <% } %>
+                        <% if(warningMessage.length > 0){ %>
+                        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+                        <% } %>
+                        <h2>Confirm Delivery</h2>
+                        <div class="instruction">
+                            Enter One Time Password(OTP) which is sent to Customer for Confirm delivery.
+                        </div>
+                        <div class="input-container-wrapper">
+                            <form action="/order-delivered" id="confirm-delivery-form" class="confirm-delivery-form"
+                                method="post" novalidate>
+                                <div class="input-container">
+                                    <label for="otp">OTP</label>
+                                    <small class="input-error" id="otp-err"></small>
+                                    <input type="number" name="otp" id="otp" placeholder="Enter OTP Code">
+                                </div>
+                                <div class="input-container">
+                                    <button type="submit" class="submit-btn">Confirm delivery</button>
+                                </div>
+                            </form>
+                            <div class="resend-code-input">
+                                <form action="/confirm-delivery" method="post">
+                                    <input type="hidden" name="orderId" value="<%= order._id %>">
+                                    <button type="submit" class="btn resend-code-btn">Resend Code</button>
+                                </form>
+                            </div>
+                        </div>
+                        <a href="<%= returnTo ? returnTo : '/orders/shipped-orders' %>" class="back-btn">
+                            Back
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <%- include('../includes/footer.ejs') %>
+        <%- include('../includes/scripts.ejs') %>
+        <script src="/js/manageOrders/confirmDelivery.js"></script>
+    </body>
+
+    </html>

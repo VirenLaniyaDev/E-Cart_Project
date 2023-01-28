@@ -1,0 +1,105 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_products/manage-products.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+
+        <div class="page-title-info mtb-8">
+            <h1 class="page-title">Manage Products</h1>
+            <p class="page-info">Seller can Manage(like edit, delete) their products here.</p>
+        </div>
+
+        <div class="table-container mtb-8">
+            <% if(hasProducts){ %>
+            <table class="table" id="products-table" data-prodlength = "<%= +products.length %>">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Index</th>
+                        <th style="width: 40%;">Title</th>
+                        <th style="width: 13%;">Category</th>
+                        <th style="width: 10%;">Selling Price</th>
+                        <th style="width: 7%;">Quantity</th>
+                        <th style="width: 13%;">Operations</th>
+                        <th style="width: 12%;">Last updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let count = 1; %>
+                    <% products.forEach( product => { %>
+                    <tr>
+                        <td><%= count++; %></td>
+                        <td><%= product.title %></td>
+                        <td>
+                            <%= product.category %>
+                            <% if(product.subcategory != null){ %>
+                                <span>(<%= product.subcategory %>)</span>
+                            <% } %>
+                        </td>
+                        <td><%= product.sellingPrice %></td>
+                        <td><%= product.quantity %></td>
+                        <td class="operations-container">
+                            <div class="operation tooltip">
+                                <a href="/manage-products/view/<%= product._id %>">
+                                    <button class="operation-btn viewOp">
+                                        <img src="/assets/icons/view_icon_white.svg" alt="View">
+                                    </button>
+                                </a>
+                                <span class="tooltip-text">View</span>
+                            </div>
+                            <div class="operation tooltip">
+                                <a href="/manage-products/edit/<%= product._id %>">
+                                    <button class="operation-btn editOp">
+                                        <img src="/assets/icons/edit_icon_white.svg" alt="Edit">
+                                    </button>
+                                </a>
+                                <span class="tooltip-text">Edit</span>
+                            </div>
+                            <div class="operation tooltip">
+                                <form action="/manage-products/delete/<%= product._id %>" method="post" id="delete-product-<%= count-1; %>">
+                                    <button class="operation-btn deleteOp">
+                                        <img src="/assets/icons/delete_icon_white.svg" alt="Delete">
+                                    </button>
+                                </form>
+                                <span class="tooltip-text">Delete</span>
+                            </div>
+                        </td>
+                        <td><%- include('../includes/helpers/getLocalStringUpdatedAt.ejs', { product : product }); %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <div class="not-found">
+                    <h2 class="title">No Products for Manage!</h2>
+                    <div class="reference">
+                        <a href="/add-product" class="btn-link">
+                            <button type="button" class="btn add-prod-btn">
+                                <img src="/assets/icons/add_icon_white.svg">
+                                <span>Add Product</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageProducts/deleteProduct.js"></script>
+</body>
+
+</html>

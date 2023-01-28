@@ -1,0 +1,112 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_profile/profile.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+    
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="profile-head-container mtb-8">
+            <div class="profile-img-name">
+                <div class="profile-img-box">
+                    <% if(seller.profilePicture){ %>
+                        <img src="/<%= seller.profilePicture %>">
+                    <% } else { %>
+                        <img src="/assets/images/user.png">
+                    <% } %>
+                </div>
+                <h1 class="profile-name"><%= seller.name %></h1>
+            </div>
+            <div class="profile-manage-options">
+                <a href="/change-password" class="btn-link">
+                    <button type="button" class="btn change-password-btn">
+                        <img src="/assets/icons/changePassword_icon_white.svg">
+                        <span>Change Password</span>
+                    </button>
+                </a>
+                <a href="/edit-profile" class="btn-link">
+                    <button type="button" class="btn">
+                        <img src="/assets/icons/edit_icon_white.svg">
+                        <span>Edit Profile</span>
+                    </button>
+                </a>
+            </div> 
+        </div>
+
+        <div class="profile-content-container">
+            <fieldset class="fieldset mtb-8">
+                <legend class="fieldset-title">Seller details</legend>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Name</h3>
+                    <p class="content-field-info"><%= seller.name %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Email</h3>
+                    <p class="content-field-info"><%= seller.email %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Mobile</h3>
+                    <p class="content-field-info"><%= seller.mobile %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">About Seller</h3>
+                    <% if(seller.about_seller){ %>
+                        <p class="content-field-info"><%- include('../includes/helpers/lineBreaker.ejs', { textDescription : seller.about_seller }) %></p>
+                    <% } else { %>
+                        <p class="content-field-info">-</p>
+                    <% } %>
+                </div>
+            </fieldset>
+            
+            <fieldset class="fieldset mtb-8">
+                <legend class="fieldset-title">Business details</legend>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Business(Retail/Store) Name</h3>
+                    <p class="content-field-info"><%= seller.business_name %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">GSTIN</h3>
+                    <p class="content-field-info"><%= seller.business_GSTIN ? seller.business_GSTIN : "-" %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Address (Business store/retail)</h3>
+                    <% if(seller.business_address){ %>
+                        <p class="content-field-info"><%- include('../includes/helpers/lineBreaker.ejs', { textDescription : seller.business_address }) %></p>
+                    <% } else { %>
+                        <p class="content-field-info">-</p>
+                    <% } %>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset mtb-8">
+                <legend class="fieldset-title">Payments details</legend>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Bank Name</h3>
+                    <p class="content-field-info"><%= seller.bank_name ? seller.bank_name : "-" %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Bank Account Number</h3>
+                    <p class="content-field-info"><%= seller.bank_account_no ? seller.bank_account_no : "-" %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Bank IFSC</h3>
+                    <p class="content-field-info"><%= seller.bank_IFSC ? seller.bank_IFSC : "-" %></p>
+                </div>
+            </fieldset>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+</body>
+
+</html>

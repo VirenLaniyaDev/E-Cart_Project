@@ -1,0 +1,30 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/error.css">
+</head> 
+<body>
+    <%- include('includes/header.ejs') %>
+
+    <main>
+        <div class="error-container mtb-16">
+            <% if(error_status_code == 400){ %>
+                <div class="error">
+                    <img src="/assets/illustrations/400_Bad Request_illustrator.svg" alt="Error 400 : Bad Request!">
+                </div>
+                <% } else if(error_status_code == 404){ %>
+                <div class="error">
+                    <img src="/assets/illustrations/404_Page not found_illustrator.svg" alt="Error 404 : Page not found!">
+                </div>
+                <div class="action-btn-container">
+                    <a href="/">
+                        <button type="button" class="btn">Go Home</button>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+
+    <%- include('includes/scripts.ejs') %>
+</body>
+</html>

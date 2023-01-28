@@ -1,0 +1,283 @@
+/*** Common CSS ***/
+.mtb-8 {
+    margin: 8px 0;
+}
+
+.mtb-16 {
+    margin: 16px 0;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.product-url {
+    text-decoration: none;
+    color          : #000000;
+    transition     : var(--secondary-transition-time-sec) ease;
+}
+
+.product-url:hover {
+    color: var(--secondary-dark-clr);
+}
+
+/********* Orders container *********/
+.orders-container {
+    width: 100%;
+}
+
+.orders-container .orders-wrapper {
+    display   : flex;
+    column-gap: 8px;
+    row-gap   : 8px;
+}
+
+/****** Orders statistics box ******/
+.orders-wrapper .orders-statistics-box {
+    width     : 100%;
+    max-width : 320px;
+    position  : sticky;
+    top       : 88px;
+    align-self: flex-start;
+}
+
+.orders-statistics-box .orders-statistics-wrapper {
+    width           : 100%;
+    background-color: var(--bg-light);
+}
+
+.orders-statistics-wrapper .order-statistics-title {
+    padding       : 12px 16px;
+    text-transform: uppercase;
+    font-size     : 17px;
+    font-weight   : 600;
+    border-bottom : 1px solid var(--secondary-clr);
+}
+
+.stat-items-container {
+    padding: 0 16px;
+}
+
+.stat-items-container .stat-item {
+    margin         : 16px 0;
+    display        : flex;
+    justify-content: space-between;
+    align-items    : center;
+}
+
+.stat-item:last-child {
+    padding-bottom: 16px;
+}
+
+/****** Orders content ******/
+.orders-wrapper .orders-content {
+    width: 100%;
+}
+
+/*** Order item container ***/
+.order-link {
+    display        : block;
+    text-decoration: none;
+    color          : #000000;
+}
+
+.orders-content .order-item-container {
+    margin          : 16px 0;
+    padding         : 16px;
+    display         : flex;
+    align-items     : flex-start;
+    background-color: var(--whiteSmoke-clr);
+    transition      : var(--primary-transition-time-sec);
+}
+
+.order-item-container:first-child {
+    margin-top: 0;
+}
+
+.orders-content .order-item-container:hover {
+    box-shadow: 0 0 4px #808080;
+}
+
+/* Product image */
+.order-item-container>.product-url {
+    display   : block;
+    /* border : 1px solid #e2e1e1; */
+}
+
+.order-item-container .item-image {
+    width           : 160px;
+    min-width       : 160px;
+    height          : 160px;
+    padding         : 8px;
+    background-color: #ffffff;
+}
+
+.order-item-container .item-image img {
+    width     : 100%;
+    height    : 100%;
+    object-fit: contain;
+}
+
+/** Item information **/
+.order-item-container .item-info-wrapper {
+    width          : 100%;
+    min-height     : 160px;
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-between;
+    padding        : 0 16px;
+}
+
+/* Item details */
+.item-details .product-title {
+    text-decoration: none;
+    font-weight    : 500;
+}
+
+.item-details .product-seller {
+    font-size: 14px;
+}
+
+.price-discount-info .price-title {
+    font-size   : 15px;
+    margin-right: 4px;
+}
+
+.price-discount-info .price {
+    font-size  : 20px;
+    font-weight: 500;
+}
+
+/* Item quantity and delivery */
+.item-info-wrapper .item-quantity-delivery {
+    display        : flex;
+    justify-content: space-between;
+    align-items    : center;
+    row-gap        : 8px;
+}
+
+.item-quantity-delivery .quantity-box {
+    display    : flex;
+    align-items: center;
+    column-gap : 8px;
+}
+
+.item-quantity-delivery {
+    font-size: 14px;
+}
+
+.delivery .delivered {
+    color: var(--success-clr);
+}
+
+.delivery .delivered~span {
+    color: var(--success-clr);
+}
+
+.delivery .cancelled {
+    color: var(--danger-clr);
+}
+
+.delivery .cancelled~span {
+    color: var(--danger-clr);
+}
+
+/*** For no orders (orders empty container) ***/
+.orders-empty-container {
+    width           : 100%;
+    height          : 524px;
+    background-color: var(--bg-light);
+    display         : flex;
+    flex-direction  : column;
+    justify-content : center;
+    align-items     : center;
+}
+
+.orders-empty-container .orders-empty-img {
+    margin: 16px 0;
+    width : 160px;
+    height: auto;
+}
+
+.orders-empty-container .orders-empty-title {
+    font-weight: 600;
+}
+
+.orders-empty-container .orders-empty-btn {
+    margin: 16px 0;
+    width : 160px;
+}
+
+
+/********* Responsive (Media query) *********/
+@media(max-width:1360px) {
+    main {
+        position: relative;
+        padding : 0;
+    }
+}
+
+@media(max-width:1024px) {
+    .orders-container .orders-wrapper {
+        flex-direction: column;
+    }
+
+    .orders-wrapper .orders-statistics-box {
+        margin: auto;
+    }
+}
+
+@media(max-width:750px) {
+
+    .item-details .product-title,
+    .item-details .product-seller,
+    .item-details .stock,
+    .price-discount-info .price-title {
+        font-size: 80%;
+    }
+
+    .delivery-address-container,
+    .delivery-address-container .address {
+        font-size: 90%;
+    }
+
+    .orders-content .order-item-container {
+        padding: 8px;
+    }
+
+    .orders-container .orders-wrapper {
+        flex-direction: column;
+    }
+
+    .order-item-container .item-image {
+        width     : 106px;
+        min-width : 106px;
+        min-height: 180px;
+    }
+
+    .price-discount-info .price {
+        font-size: 17px;
+    }
+
+    .order-item-container .item-info-wrapper {
+        padding-right: 0;
+        min-height   : 180px;
+    }
+
+    /* Item quantity and delivery */
+    .item-info-wrapper .item-quantity-delivery {
+        flex-direction : column;
+        justify-content: space-between;
+        align-items    : flex-start;
+    }
+
+    .delivery {
+        font-size: 12px;
+    }
+
+    /* Order statistics box */
+    .orders-wrapper .orders-statistics-box {
+        position : static;
+        max-width: 100%;
+    }
+}

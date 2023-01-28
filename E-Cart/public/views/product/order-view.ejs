@@ -1,0 +1,210 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/product/order-view.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <a href="/orders" class="back-btn mtb-8">
+            Back 
+        </a>
+        <div class="delivery-invoice-container mtb-16">
+            <div class="di-wrapper delivery-address-wrapper">
+                <h3 class="title">Delivery Address</h3>
+                <div class="di-content delivery-content">
+                    <div class="deliverTo strong"><%= order.user.name %></div>
+                    <div class="delivery-address">
+                        <%- include('../includes/helpers/lineBreaker.ejs', { textDescription : order.user.delivery_address }) %>
+                    </div>
+                </div>
+            </div>
+            <% if(order.status == "Delivered"){ %>
+            <div class="di-wrapper invoice-wrapper">
+                <h3 class="title">Invoice</h3>
+                <div class="di-content invoice-content">
+                    <form action="/order/download-invoice" method="post">
+                        <input type="hidden" name="orderId" value="<%= order._id %>">
+                        <button type="submit" class="btn">Download Invoice</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div class="order-tracking-container mtb-16" data-order-status="<%= order.status %>">
+            <div class="order-tracking-wrapper">
+                <div class="order-tracking-content">
+                    <div class="order-tracking completed">
+                        <span class="is-complete"></span>
+                        <p>Ordered<br><span><%- include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.createdAt }) %></span></p>
+                    </div>
+                    <% if(order.status == "Cancelled"){ %>
+                    <div class="order-tracking">
+                        <span class="is-complete"></span>
+                        <p>Cancelled<br><span><%- order.cancelled_on ? include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.cancelled_on }) : ""%></span></p>
+                    </div>
+                    <% } else { %>
+                    <div class="order-tracking">
+                        <span class="is-complete"></span>
+                        <p>Shipped<br><span><%- order.shipped_on ? include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.shipped_on }) : ""%></span></p>
+                    </div>
+                    <% } %>
+                    <div class="order-tracking">
+                        <span class="is-complete"></span>
+                        <% if(order.status != "Cancelled"){ %>
+                        <p>
+                            <% if(order.status == "Delivered"){ %>
+                            Delivered
+                            <% } else { %>
+                            Delivery by,
+                            <% } %><br>
+                            <span><%- include('../includes/helpers/getDayMonthWeekday.ejs', { date : order.delivery_on })%></span>
+                        </p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-container mtb-16">
+            <div class="order-item-container">
+                <div class="item-image">
+                    <a href="/product/<%= order.product._id %>" class="product-url">
+                        <img src="/<%= order.product.image %>">
+                    </a>
+                </div>
+                <div class="item-info-wrapper">
+                    <div class="item-details">
+                        <a href="/product/<%= order.product._id %>" class="product-url">
+                            <h4 class="product-title"><%= order.product.title %></h4>
+                        </a>
+                        <small class="product-seller">Seller : <%= order.seller.business_name %></small>
+                        <div class="seller-info-box">
+                            <button class="i-btn">i</button>
+                            <div class="seller-info d-none">
+                                <div class="info-item">
+                                    <span class="item-title">Current Seller : </span>
+                                    <span class="seller-detail"><%= seller.business_name %></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="item-title">Seller Email : </span>
+                                    <span class="seller-detail">
+                                        <a href="mailto:<%= seller.email %>"><%= seller.email %></a>
+                                    </span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="item-title">Seller Mobile : </span>
+                                    <span class="seller-detail"><%= seller.mobile %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-quantity-delivery">
+                        <div class="quantity-box">
+                            <span>Quantity : </span>
+                            <span class="quantity strong"><%= order.product.ordered_quantity %></span>
+                            <span>|</span>
+                            <span>Payment : </span>
+                            <span class="payment strong">
+                            <% if(order.payment_status == "Refunded"){ %>
+                                Refunded
+                            <% } else if(order.payment_status == "done"){ %>
+                                <% if(order.status == "Cancelled"){ %>
+                                Refund(Pending)
+                                <% } else { %>
+                                Done
+                                <% } %>
+                            <% } else { %>
+                                <% if(order.status == "Cancelled"){ %>
+                                Not done(COD)
+                                <% } else { %>
+                                Cash on Delivery
+                                <% } %>
+                            <% } %>
+                            </span>
+                        </div>
+                        <div class="delivery">
+                            <div class="delivery-content">
+                                <% if(order.status == "Cancelled") { %>
+                                <span class="cancelled">Cancelled on,</span>
+                                <span class="strong"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.cancelled_on }) %></span>
+                                <% } else { %>
+                                <% if(order.status == "Delivered"){ %>
+                                <span class="delivered">Delivered on,</span>
+                                <% } else { %>
+                                <span>Delivery by,</span>
+                                <% } %>
+                                <span class="strong"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.delivery_on }) %></span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-price-info-container">
+                        <table class="order-price-table">
+                            <tr>
+                                <td class="price-title">Price of Item x Quantity</td>
+                                <td>&#8377;<%= order.orderAmount.priceAmount %></td>
+                            </tr>
+                            <tr>
+                                <td class="price-title">Delivery charges</td>
+                                <td>&#8377;<%= order.orderAmount.deliveryCharges %></td>
+                            </tr>
+                            <tr>
+                                <td class="price-title">Secured packaging fee</td>
+                                <td>&#8377;<%= order.orderAmount.packagingFee %></td>
+                            </tr>
+                            <tr>
+                                <td class="price-title">Total amount of Order</td>
+                                <td class="price">&#8377;<%= order.orderAmount.totalAmount %></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>                        
+            </div>
+        </div>
+        <div class="action-btn-container mtb-16">
+            <% if(order.status == "Ordered"){ %>
+            <form action="/cancel-order" method="post" id="cancel-order-form">
+                <input type="hidden" name="orderId" value="<%= order._id %>">
+                <button type="submit" class="btn cancel-order-btn">Cancel Order</button>
+            </form>
+            <% } else if(order.status == "Delivered" && (!order.productRating_byUser)) { %>
+            <form action="/rate-product" method="post" class="ratings-form">
+                <input type="hidden" name="orderId" value="<%= order._id %>">
+                <input type="hidden" name="productId" value="<%= order.product._id %>">
+                <div class="rate-title">Rate this product : </div>
+                <div class="rate">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="text">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" />
+                    <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" />
+                    <label for="star1" title="text">1 star</label>
+                </div>
+                <div class="submit-ratings">
+                    <button type="submit" class="btn">Submit</button>
+                </div>
+            </form>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/product/order-view.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_profile/profile.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+    
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="profile-head-container mtb-8">
+            <div class="profile-img-name">
+                <div class="profile-img-box">
+                    <% if(user.profilePicture){ %>
+                        <img src="/<%= user.profilePicture %>">
+                    <% } else { %>
+                        <img src="/assets/images/user.png">
+                    <% } %>
+                </div>
+                <h1 class="profile-name"><%= user.name %></h1>
+            </div>
+            <div class="profile-manage-options">
+                <a href="/change-password" class="btn-link">
+                    <button type="button" class="btn change-password-btn">
+                        <img src="/assets/icons/changePassword_icon_white.svg">
+                        <span>Change Password</span>
+                    </button>
+                </a>
+                <a href="/edit-profile" class="btn-link">
+                    <button type="button" class="btn">
+                        <img src="/assets/icons/edit_icon_white.svg">
+                        <span>Edit Profile</span>
+                    </button>
+                </a>
+            </div> 
+        </div>
+
+        <div class="profile-content-container">
+            <fieldset class="fieldset mtb-8">
+                <legend class="fieldset-title">Personal details</legend>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Name</h3>
+                    <p class="content-field-info"><%= user.name %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Email</h3>
+                    <p class="content-field-info"><%= user.email %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Mobile</h3>
+                    <p class="content-field-info"><%= user.mobile ? user.mobile : "-" %></p>
+                </div>
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Gender</h3>
+                    <p class="content-field-info"><%= user.gender ? user.gender : "-" %></p>
+                </div>
+            </fieldset>
+            
+            <fieldset class="fieldset mtb-8">
+                <legend class="fieldset-title">Other details</legend>                
+                <div class="profile-content-field mtb-8">
+                    <h3 class="content-field-title">Delivery address</h3>
+                    <% if(user.address){ %>
+                        <p class="content-field-info"><%- include('../includes/helpers/lineBreaker.ejs', { textDescription : user.address }) %></p>
+                    <% } else { %>
+                        <p class="content-field-info">-</p>
+                    <% } %>
+                </div>
+            </fieldset>
+        </div>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+</body>
+
+</html>

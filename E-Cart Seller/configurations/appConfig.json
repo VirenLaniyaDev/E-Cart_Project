@@ -1,0 +1,20 @@
+{
+    "port": "PORT_FOR_THIS_SERVICE (Default is 3001)",
+    "session": {
+        "uri": "YOUR_MONGODB_CONNECTION_URI",
+        "secret_key": "YOUR_SECRET_KEY",
+        "collection": "seller_sessions"
+    },
+    "mail_service": {
+        "sg_ecart_api_key":"YOUR_SENDGRID_API_KEY",
+        "ecartSeller_email":"YOUR_SENDGRID_VERIFIED_EMAIL",
+        "signupSucceeded_templateId":"d-76a9ecd67e6144ccb052cc836cba4855",
+        "resetPassword_templateId":"d-c782daf788b244ee985fbb2ba4eb8d37",
+        "orderDelivered_templateId":"d-052393a24c5b42828ae05431b893ed3f"
+    },
+    "SMS_service": {
+        "twilio_sid": "YOUR_TWILIO_SID",
+        "twilio_auth_token": "YOUR_TWILIO_AUTH_TOKEN",
+        "twilio_phone_number": "YOUR_TWILIO_PHONE_NUMBER"
+    }
+}

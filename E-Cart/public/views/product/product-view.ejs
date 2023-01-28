@@ -1,0 +1,190 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/product/product-view.css">
+    <link rel="stylesheet" href="/styles/product/product-demo.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="product-container mtb-8">
+            <div class="product-wrapper">
+                <div class="product-img-options-box">
+                    <div class="product-image-box">
+                        <img src="/<%= product.image %>" alt="Loading...">
+                    </div>
+                    <% if(product.quantity > 0){ %>
+                    <div class="product-options-box">
+                        <form action="/add-to-cart/<%= product._id %>" method="post">
+                            <button type="submit" class="btn add-to-cart-btn">
+                                <img src="/assets/icons/cart_icon_white.svg">
+                                <span>Add to Cart</span>
+                            </button>
+                        </form>
+                        <form action="/checkout/<%= product._id %>">
+                            <button type="submit" class="btn">
+                                <img src="/assets/icons/buyNow_icon_white.svg">
+                                <span>Buy Now</span>
+                            </button>
+                        </form>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="product-content">
+                    <h2 class="product-title mtb-8"><%= product.title %></h2>
+                    <div class="product-price-box mtb-8">
+                        <span class="price">&#8377;<%= product.sellingPrice %></span>
+                        <% if(product.discount_percentage > 0){ %>
+                        <span class="mrp"><del>&#8377;<%= product.MRP %></del></span>
+                        <div class="discount_ratings">
+                            <p class="label discount_percentage"><%= product.discount_percentage %>% Off</p>
+                            <span class="ratings_wrapper">
+                                <span class="label ratings <%= product.product_rating > 2 ? 'bg-success' : 'bg-danger' %>"><%= product.product_rating %> &#9733;</span>
+                                <span class="ratedBy">(<%= product.product_ratedBy %>)</span>
+                            </span>
+                        </div>
+                        <p class="save">Save &#8377;<%= product.MRP-product.sellingPrice %></p>
+                        <% } %>
+                    </div>
+                    <!-- <div class="plus">+</div> -->
+                    <div class="mtb-8">
+                        <span class="plus" style="display: inline-block;">+ </span>
+                        <% if(product.sellingPrice > 500){ %>
+                            <p class="delivery-charge"><span class="free-delivery">Free delivery(&#8377;0)</span> <del>&#8377;40</del></p>
+                        <% } else { %>
+                            <p class="delivery-charge">&#8377;40 <small>Shipping Charge</small></p>
+                        <% } %>
+                    </div>
+                    <div class="total-amount mtb-8">
+                        <span class="total">Total Amount : </span>
+                        <% if(product.sellingPrice > 500){ %>
+                            <span>&#8377;<%= product.sellingPrice %> + &#8377;0 = <span class="total">&#8377;<%= product.sellingPrice %></span></span>
+                        <% } else { %>
+                            <span>&#8377;<%= product.sellingPrice %> + &#8377;40 = <span class="total">&#8377;<%= product.sellingPrice + 40 %></span></span>
+                        <% } %>
+                    </div>
+                    <div class="stock-details mtb-8">
+                        <% if(product.quantity <= 0){ %>
+                        <small class="stock danger-stock">Unavailable</small>
+                        <% } else if(product.quantity <= 2){ %>
+                        <small class="stock danger-stock">Only <%= product.quantity %> left</small>
+                        <% } else { %>
+                        <small class="stock success-stock">In Stock</small>
+                        <% } %>
+                    </div>
+                    <div class="delivery-by mtb-8">
+                        <div class="delivery-by-content">
+                            <span>Delivery by,</span>
+                            <span class="bold"><%- include('../includes/helpers/getLocalStringDelivery.ejs', { delivery_days : product.delivery_within_days }) %></span>
+                        </div>
+                    </div>
+                    <div class="ratings-bar">
+                        <span class="heading">User Ratings</span>
+                        <span class="star <%= product.product_rating >= 1 ? 'checked': '' %>">&#9733;</span>
+                        <span class="star <%= product.product_rating >= 2 ? 'checked': '' %>">&#9733;</span>
+                        <span class="star <%= product.product_rating >= 3 ? 'checked': '' %>">&#9733;</span>
+                        <span class="star <%= product.product_rating >= 4 ? 'checked': '' %>">&#9733;</span>
+                        <span class="star <%= product.product_rating >= 5 ? 'checked': '' %>">&#9733;</span>
+                        <p><span class="bold"><%= product.product_rating %></span> average rating based on <span class="bold"><%= product.product_ratedBy %></span> people reviews.</p>
+                        <hr class="rating-divider">
+                    
+                        <div class="row" id="user-ratings" data-product-rated-by="<%= product.product_ratedBy %>">
+                            <div class="side">
+                                <div>5 star</div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                    <div class="bar bar-5" id="bar-5" data-star5="<%= product.user_ratings.star_5 %>"></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div><%= product.user_ratings.star_5 %></div>
+                            </div>
+                            <div class="side">
+                                <div>4 star</div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                    <div class="bar bar-4" id="bar-4" data-star4="<%= product.user_ratings.star_4 %>"></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div><%= product.user_ratings.star_4 %></div>
+                            </div>
+                            <div class="side">
+                                <div>3 star</div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                    <div class="bar bar-3" id="bar-3" data-star3="<%= product.user_ratings.star_3 %>"></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div><%= product.user_ratings.star_3 %></div>
+                            </div>
+                            <div class="side">
+                                <div>2 star</div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                    <div class="bar bar-2" id="bar-2" data-star2="<%= product.user_ratings.star_2 %>"></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div><%= product.user_ratings.star_2 %></div>
+                            </div>
+                            <div class="side">
+                                <div>1 star</div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                    <div class="bar bar-1" id="bar-1" data-star1="<%= product.user_ratings.star_1 %>"></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div><%= product.user_ratings.star_1 %></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-seller-details content-field-container mtb-16">
+                        <h3 class="content-title ">Seller details</h3>
+                        <div class="seller-details content">
+                            <h4 class="business-name"><%= seller.business_name %></h4>
+                            <dl class="seller-description">
+                                <dt>About seller</dt>
+                                <dd><%- include('../includes/helpers/lineBreaker.ejs', { textDescription:seller.about_seller }) %></dd>
+                                <dt>GSTIN</dt>
+                                <dd><%= seller.business_GSTIN %></dd>
+                                <dt>Address</dt>
+                                <dd><%- include('../includes/helpers/lineBreaker.ejs', { textDescription: seller.business_address }) %></dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="product-description content-field-container mtb-16">
+                        <h3 class="content-title">Product Description</h3>
+                        <div class="content">
+                            <%- include('../includes/helpers/lineBreaker.ejs', { textDescription: product.description}) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/product/productView.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,235 @@
+<%- include('includes/head.ejs') %>
+    <!-- CSS for Sliders(Swiper js) -->
+    <link rel="stylesheet" href="/styles/index/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/styles/index/index.css">
+</head>
+
+<body>
+    
+    <%- include('includes/header.ejs') %>
+
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('./includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('./includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="categories-container m-8">
+            <a href="/categories/?category=mobiles" class="category">
+                <img src="/assets/images/categories/mobiles.webp">
+                <p>Mobiles</p>
+            </a>
+            <div class="category">
+                <img src="/assets/images/categories/electronics.webp">
+                <div class="category-detail">
+                    <p>Electronics</p>
+                    <img src="/assets/icons/down_icon_black.svg" class="category-down-arrow">
+                </div>
+                <div class="sub-categories-container">
+                    <ul class="sub-categories-list">
+                        <a href="/categories/?category=electronics&subcategory=laptop"><li>Laptop</li></a>
+                        <a href="/categories/?category=electronics&subcategory=camera"><li>Camera</li></a>
+                        <a href="/categories/?category=electronics&subcategory=headphonesEarbuds"><li>Headphones & Earbuds</li></a>
+                        <a href="/categories/?category=electronics&subcategory=mobileAcc"><li>Mobile Accessories</li></a>
+                    </ul>
+                </div>
+            </div>
+            <div class="category">
+                <img src="/assets/images/categories/fashion.webp">
+                <div class="category-detail">
+                    <p>Fashion</p>
+                    <img src="/assets/icons/down_icon_black.svg" class="category-down-arrow">
+                </div>
+                <div class="sub-categories-container">
+                    <ul class="sub-categories-list">
+                        <a href="/categories/?category=fashion&subcategory=topWear"><li>Top wear(Shirt/T-Shirt)</li></a>
+                        <a href="/categories/?category=fashion&subcategory=bottomWear"><li>Bottom wear</li></a>
+                        <a href="/categories/?category=fashion&subcategory=westerns"><li>Western</li></a>
+                        <a href="/categories/?category=fashion&subcategory=blazers"><li>Blazers</li></a>
+                        <a href="/categories/?category=fashion&subcategory=watches"><li>Watches</li></a>
+                        <a href="/categories/?category=fashion&subcategory=shoes"><li>Shoes</li></a>
+                    </ul>
+                </div>
+            </div>
+            <a href="/categories/?category=books" class="category">
+                <img src="/assets/images/categories/books.webp">
+                <p>Books</p>
+            </a>
+            <a href="/categories/?category=toys" class="category">
+                <img src="/assets/images/categories/toys.webp">
+                <p>Toys</p>
+            </a>
+            <a href="/categories/?category=appliance" class="category">
+                <img src="/assets/images/categories/appliances.webp">
+                <p>Appliances</p>
+            </a>
+        </div>
+
+        <!-- Slider Container -->
+        <div class="main-slider swiper m-8">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="/assets/images/slider/sale.jpg"></div>
+                <div class="swiper-slide"><img src="/assets/images/slider/mobile.jpg"></div>
+                <div class="swiper-slide"><img src="/assets/images/slider/clothes.jpg"></div>
+            </div>
+
+            <div class="main-slider-pagination swiper-pagination"></div>
+        
+            <div class="main-slider-prev swiper-button-prev"></div>
+            <div class="main-slider-next swiper-button-next"></div>
+        </div>
+
+        <!-- Card Swiper Container -->
+        <% if(products.top_discount_mobileProds.length > 0){ %>
+        <div class="card-container-wrapper m-8">
+            <h3 class="cc-title">Top Mobile deals</h3>
+            <hr class="separator-hr">
+            <div class="card-container swiper">
+                <div class="card-slide-container" id="topMobileDeals_card-swiper" data-id="1">
+                  <div class="card-wrapper swiper-wrapper">
+                    <% products.top_discount_mobileProds.forEach( product => { %>
+                    <a href="/product/<%= product._id %>" class="card swiper-slide">
+                        <div class="image-box">
+                            <img src="/<%= product.image %>">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="product-title"><%= product.title %></h5>
+                            <div class="product-discount-price">
+                                <div class="product-discount-ratings">
+                                    <h3 class="label discount"><%= product.discount_percentage %>% <small>Off</small></h3>
+                                    <div class="ratings-wrapper">
+                                        <h3 class="label ratings <%= product.product_rating > 2 ? 'bg-success' : 'bg-danger' %>"><%= product.product_rating %> &#9733;</h3>
+                                        <small class="rated-by">(<%= product.product_ratedBy %>)</small>
+                                    </div>
+                                </div>
+                                <h3 class="price">&#8377;<%= product.sellingPrice %> <small><del>&#8377;<%= product.MRP %></del></small></h3>
+                            </div>
+                        </div>
+                    </a>
+                    <% }) %>
+                  </div>
+                </div>
+                <div class="swiper-button-next card-swiper-next-1 swiper-navBtn"></div>
+                <div class="swiper-button-prev card-swiper-prev-1 swiper-navBtn"></div>
+              </div>
+        </div>
+        <% } %>
+        <% if(products.top_discount_electronicProds.length > 0){ %>
+        <div class="card-container-wrapper m-8">
+            <h3 class="cc-title">Top Electronics deals</h3>
+            <hr class="separator-hr">
+            <div class="card-container swiper">
+                <div class="card-slide-container" id="topElectronicsDeals_card-swiper" data-id="2">
+                  <div class="card-wrapper swiper-wrapper">
+                    <% products.top_discount_electronicProds.forEach( product => { %>
+                    <a href="/product/<%= product._id %>" class="card swiper-slide">
+                        <div class="image-box">
+                            <img src="/<%= product.image %>">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="product-title"><%= product.title %></h5>
+                            <div class="product-discount-price">
+                                <div class="product-discount-ratings">
+                                    <h3 class="label discount"><%= product.discount_percentage %>% <small>Off</small></h3>
+                                    <div class="ratings-wrapper">
+                                        <h3 class="label ratings <%= product.product_rating > 2 ? 'bg-success' : 'bg-danger' %>"><%= product.product_rating %> &#9733;</h3>
+                                        <small class="rated-by">(<%= product.product_ratedBy %>)</small>
+                                    </div>
+                                </div>
+                                <h3 class="price">&#8377;<%= product.sellingPrice %> <small><del>&#8377;<%= product.MRP %></del></small></h3>
+                            </div>
+                        </div>
+                    </a>
+                    <% }) %>
+                  </div>
+                </div>
+                <div class="swiper-button-next card-swiper-next-2 swiper-navBtn"></div>
+                <div class="swiper-button-prev card-swiper-prev-2 swiper-navBtn"></div>
+              </div>
+        </div>
+        <% } %>
+        <% if(products.top_discount_fashionProds.length > 0){ %>
+        <div class="card-container-wrapper m-8">
+            <h3 class="cc-title">Top Fashion sales</h3>
+            <hr class="separator-hr">
+            <div class="card-container swiper">
+                <div class="card-slide-container" id="topFashionDeals_card-swiper" data-id="3">
+                  <div class="card-wrapper swiper-wrapper">
+                    <% products.top_discount_fashionProds.forEach( product => { %>
+                    <a href="/product/<%= product._id %>" class="card swiper-slide">
+                        <div class="image-box">
+                            <img src="/<%= product.image %>">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="product-title"><%= product.title %></h5>
+                            <div class="product-discount-price">
+                                <div class="product-discount-ratings">
+                                    <h3 class="label discount"><%= product.discount_percentage %>% <small>Off</small></h3>
+                                    <div class="ratings-wrapper">
+                                        <h3 class="label ratings <%= product.product_rating > 2 ? 'bg-success' : 'bg-danger' %>"><%= product.product_rating %> &#9733;</h3>
+                                        <small class="rated-by">(<%= product.product_ratedBy %>)</small>
+                                    </div>
+                                </div>
+                                <h3 class="price">&#8377;<%= product.sellingPrice %> <small><del>&#8377;<%= product.MRP %></del></small></h3>
+                            </div>
+                        </div>
+                    </a>
+                    <% }) %>
+                  </div>
+                </div>
+                <div class="swiper-button-next card-swiper-next-3 swiper-navBtn"></div>
+                <div class="swiper-button-prev card-swiper-prev-3 swiper-navBtn"></div>
+              </div>
+        </div>
+        <% } %>
+        <% if(products.top_discount_applianceProds.length > 0){ %>
+        <div class="card-container-wrapper m-8">
+            <h3 class="cc-title">Crazy deals on Appliances</h3>
+            <hr class="separator-hr">
+            <div class="card-container swiper">
+                <div class="card-slide-container" id="topApplianceDeals_card-swiper" data-id="4">
+                  <div class="card-wrapper swiper-wrapper">
+                    <% products.top_discount_fashionProds.forEach( product => { %>
+                    <a href="/product/<%= product._id %>" class="card swiper-slide">
+                        <div class="image-box">
+                            <img src="/<%= product.image %>">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="product-title"><%= product.title %></h5>
+                            <div class="product-discount-price">
+                                <div class="product-discount-ratings">
+                                    <h3 class="label discount"><%= product.discount_percentage %>% <small>Off</small></h3>
+                                    <div class="ratings-wrapper">
+                                        <h3 class="label ratings <%= product.product_rating > 2 ? 'bg-success' : 'bg-danger' %>"><%= product.product_rating %> &#9733;</h3>
+                                        <small class="rated-by">(<%= product.product_ratedBy %>)</small>
+                                    </div>
+                                </div>
+                                <h3 class="price">&#8377;<%= product.sellingPrice %> <small><del>&#8377;<%= product.MRP %></del></small></h3>
+                            </div>
+                        </div>
+                    </a>
+                    <% }) %>
+                  </div>
+                </div>
+                <div class="swiper-button-next card-swiper-next-4 swiper-navBtn"></div>
+                <div class="swiper-button-prev card-swiper-prev-4 swiper-navBtn"></div>
+              </div>
+        </div>
+        <% } %>
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+    <%- include('includes/scripts.ejs') %>
+    <!-- Slider scripts -->
+    <script src="/js/index/swiper-bundle.min.js" type="text/Javascript"></script>
+    <script src="/js/index/slider.js"></script>
+    <!-- Card slider -->
+    <script src="/js/index/cardSlider.js"></script>
+</body>
+
+</html>

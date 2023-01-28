@@ -1,0 +1,115 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/product/orders.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="orders-container mtb-8">
+            <% if( orders.length > 0 ){ %>
+            <div class="orders-wrapper">
+                <div class="orders-statistics-box">
+                    <div class="orders-statistics-wrapper">
+                        <h3 class="order-statistics-title">Orders statistics</h3>
+                        <div class="stat-items-container">
+                            <div class="stat-item">
+                                <div class="stat-item-title">Total orders</div>
+                                <span class="stat-item-value"><%= orders.length %></span>
+                            </div>
+                            <% let pending_orders = 0, delivered_orders=0, cancelled_orders = 0; %>
+                            <% orders.forEach(order =>{
+                                if(order.status == "Delivered"){
+                                    delivered_orders++;
+                                } else if(order.status == "Cancelled") {
+                                    cancelled_orders++;
+                                } else {
+                                    pending_orders++;
+                                }
+                            }) %>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Pending orders</div>
+                                <span class="stat-item-value"><%= pending_orders %></span>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Delivered orders</div>
+                                <span class="stat-item-value"><%= delivered_orders %></span>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Cancelled orders</div>
+                                <span class="stat-item-value"><%= cancelled_orders %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="orders-content">
+                    <% orders.forEach( order => { %>
+                        <a href="/order/<%= order._id %>" class="order-link">
+                            <div class="order-item-container">
+                                <div class="item-image">
+                                    <img src="/<%= order.product.image %>">
+                                </div>
+                                <div class="item-info-wrapper">
+                                    <div class="item-details">
+                                        <h4 class="product-title"><%= order.product.title %></h4>
+                                        <small class="product-seller">Seller : <%= order.seller.business_name %></small>
+                                        
+                                        <div class="price-discount-info">
+                                            <span class="price-title">Total amount of Order: </span>
+                                            <span class="price">&#8377;<%= order.orderAmount.totalAmount %></span>
+                                        </div>
+                                    </div>
+                                    <div class="item-quantity-delivery">
+                                        <div class="quantity-box">
+                                            <span>Quantity : </span>
+                                            <span class="quantity bold"><%= order.product.ordered_quantity %></span>
+                                        </div>
+                                        <div class="delivery">
+                                            <div class="delivery-content">
+                                                <% if(order.status == "Cancelled") { %>
+                                                <span class="cancelled">Cancelled on,</span>
+                                                <span class="bold"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.cancelled_on }) %></span>
+                                                <% } else { %>
+                                                <% if(order.status == "Delivered"){ %>
+                                                <span class="delivered">Delivered on,</span>
+                                                <% } else { %>
+                                                <span>Delivery by,</span>
+                                                <% } %>
+                                                <span class="bold"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.delivery_on }) %></span>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                        
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+            <% } else { %>
+            <div class="orders-empty-container">
+                <img src="/assets/illustrations/emptyCart_illustrator.svg" class="orders-empty-img">
+                <h1 class="orders-empty-title">No orders found!</h1>
+                <p class="orders-empty-suggestion">You had not order anything.</p>
+            </div>
+            <% } %>
+        </div>
+
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/product/orders.js"></script>
+</body>
+
+</html>

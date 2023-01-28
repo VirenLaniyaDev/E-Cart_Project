@@ -1,0 +1,123 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/product/search-products.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        
+        <div class="search-products-container mtb-8">
+            <div class="search-products-wrapper">
+                <div class="search-filter-box">
+                    <div class="search-filter-btn">
+                        <button class="btn filter-btn">Filter</button>
+                    </div>
+                    <div class="search-results-filters">
+                        <h3 class="title">Results</h3>
+                        <div class="item-content mtb-16">
+                            <div class="item-content-title">Results</div>
+                            <span class="item-content-desc"><%= products.length %></span>
+                        </div>
+                        <h3 class="title">Filters</h3>
+                        <div class="filter-items-container">
+                            <div class="filter-item mtb-16">
+                                <form action="" id="filter-form">
+                                    <% if(search_string){ %>
+                                    <input type="hidden" name="search" value="<%= search_string %>">
+                                    <% } if(category) { %>
+                                    <input type="hidden" name="category" value="<%= category %>">
+                                    <% } if(subcategory) { %>
+                                    <input type="hidden" name="subcategory" value="<%= subcategory %>">
+                                    <% } %>
+                                    <h4 class="filter-item-title">Price (&#8377;)</h4>
+                                    <div class="price-filter mtb-8">
+                                        <span class="input-container">
+                                            <input type="number" name="min_price" id="min_price" placeholder="Min price" value="<%= filters.min_price %>">
+                                        </span>
+                                        <span class="filter-to">to</span>
+                                        <span class="input-container">
+                                            <input type="number" name="max_price" id="max_price" placeholder="Max price" value="<%= filters.max_price %>">
+                                        </span>
+                                    </div>
+                                    <h4 class="filter-item-title">Customer Ratings</h4>
+                                    <div class="rating-filter mtb-8" data-filter-rating="<%= filters.ratings %>">
+                                        <div>
+                                            <input type="checkbox" name="rating_filter" id="4_above" value="4">
+                                            <label for="4_above">4 or Above</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="rating_filter" id="3_above" value="3">
+                                            <label for="3_above">3 or Above</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="rating_filter" id="2_above" value="2">
+                                            <label for="2_above">2 or Above</label>
+                                        </div>
+                                    </div>
+                                    <div class="apply-filter mtb-16">
+                                        <button type="submit" class="btn" id="apply-filter-btn">Apply Filters</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% if(products.length > 0){ %>
+                <div class="search-products-content">
+                    <% products.forEach( product => { %>
+                        <a href="/product/<%= product._id %>" class="product-url">
+                            <div class="product-container">
+                                <div class="product-image-wrapper">
+                                    <img src="/<%= product.image %>">
+                                </div>
+                                <div class="product-content-wrapper">
+                                    <div class="product-title"><%= product.title %></div>
+                                    <div class="product-info">
+                                        <div class="product-price">
+                                            <h3 class="price">&#8377;<%= product.sellingPrice %></h3>
+                                            <small class="price-mrp"><del>&#8377;<%= product.MRP %></del></small>
+                                        </div>
+                                        <div class="product-discount-ratings">
+                                            <h3 class="label discount"><%= product.discount_percentage %>% <small>Off</small></h3>
+                                            <div class="ratings-wrapper">
+                                                <h3 class="label ratings <%= product.product_rating > 2 ? 'bg-success' : 'bg-danger' %>"><%= product.product_rating %> &#9733;</h3>
+                                                <small class="rated-by">(<%= product.product_ratedBy %>)</small>
+                                            </div>
+                                        </div>
+                                        <div class="seller">
+                                            <span class="seller-name">Seller : <%= product.seller_businessName %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+                <% } else { %>
+                <div class="no-results-container">
+                    <img src="/assets/illustrations/no_data.svg" class="no-result-img">
+                    <h1 class="no-results-title">No Products!</h1>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/product/searchProducts.js"></script>    
+</body>
+
+</html>

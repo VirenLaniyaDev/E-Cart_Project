@@ -1,0 +1,74 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/index.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="/js/sellerChart.js"></script>
+</head> 
+<body>
+    <%- include('includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('./includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('./includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('./includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="seller-overview-container">
+            <div class="seller-action-wrapper mtb-16">
+                <a href="/orders/order-requests" class="action">
+                    <button type="button" class="action-btn">
+                        <img src="/assets/icons/orders_icon.svg" class="action-icon">
+                        <p>Order Requests <span class="strong">(<%= pendingOrders %>)</span></p> 
+                    </button>
+                </a>
+                <a href="/add-product" class="action">
+                    <button type="button" class="action-btn">
+                        <img src="/assets/icons/addProduct_icon_black.svg" class="action-icon">
+                        <p>Add Product</p> 
+                    </button>
+                </a>
+                <a href="/manage-products" class="action">
+                    <button type="button" class="action-btn">
+                        <img src="/assets/icons/manageProducts_icon_black.svg" class="action-icon">
+                        <p>Manage Products</p> 
+                    </button>
+                </a>
+                <a href="/profile" class="action">
+                    <button type="button" class="action-btn">
+                        <img src="/assets/icons/profile_icon.svg" class="action-icon">
+                        <p>Profile</p>
+                    </button>
+                </a>
+            </div>
+            <div class="order-chart-statistics-wrapper mtb-16">
+                <div id="sellers-orders-chart" class="orders-chart"></div>
+                <div class="sellers-statistics">
+                    <div class="statistic-box">
+                        <h1><%= sellerOverview.totalCompletedOrders %></h1>
+                        <p>Total completed Orders</p>
+                    </div>
+                    <div class="statistic-box">
+                        <h1><%= sellerOverview.thisMonthOrders %></h1>
+                        <p>Orders (This month)</p>
+                    </div>
+                    <div class="statistic-box">
+                        <h1><%= sellerOverview.thisDayOrders %></h1>
+                        <p>Today's orders</p>
+                    </div>
+                    <div class="statistic-box">
+                        <h1><%= sellerOverview.availableProducts %></h1>
+                        <p>Available products</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('includes/footer.ejs') %>
+
+    <%- include('includes/scripts.ejs') %>
+</body>
+</html>

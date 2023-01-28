@@ -1,0 +1,160 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_orders/orders.css">
+</head>
+
+<body>
+    
+    <%- include('../includes/header.ejs') %>
+
+    <main>
+        <% if(errorMessage.length > 0){ %>
+        <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+        <% } %>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <div class="page-title-info mtb-8">
+            <h1 class="page-title">Orders</h1>
+        </div>
+        <div class="category-links-container mtb-16">
+            <a href="/orders/order-requests" class="category-link">
+                <div class="category">Requests</div>
+            </a>
+            <a href="/orders/shipped-orders" class="category-link active">
+                <div class="category">Shipped</div>
+            </a>
+            <a href="/orders/delivered-orders" class="category-link">
+                <div class="category">Delivered</div>
+            </a>
+            <a href="/orders/cancelled-orders" class="category-link">
+                <div class="category">Cancelled</div>
+            </a>
+        </div>
+        <div class="orders-container mtb-8">
+            <div class="orders-wrapper">
+                <div class="orders-statistics-box">
+                    <div class="orders-statistics-wrapper">
+                        <h3 class="order-statistics-title">Orders statistics</h3>
+                        <div class="stat-items-container">
+                            <div class="stat-item">
+                                <div class="stat-item-title">Order requests</div>
+                                <span class="stat-item-value"><%= orders_stats.order_requests %></span>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Shipped orders</div>
+                                <span class="stat-item-value"><%= orders_stats.shipped_orders %></span>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Delivered orders</div>
+                                <span class="stat-item-value"><%= orders_stats.delivered_orders %></span>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Cancelled orders</div>
+                                <span class="stat-item-value"><%= orders_stats.cancelled_orders %></span>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-title">Total orders</div>
+                                <span class="stat-item-value"><%= orders_stats.total_orders %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% if( orders.length > 0 ){ %>
+                <div class="orders-content">
+                    <% orders.forEach( order => { %>
+                        <a href="/orders/<%= order._id %>" class="order-link">
+                            <div class="order-item-container">
+                                <div class="item-image">
+                                    <img src="/<%= order.product.image %>">
+                                </div>
+                                <div class="item-info-wrapper">
+                                    <div class="item-details">
+                                        <h4 class="product-title"><%= order.product.title %></h4>
+                                        <div class="price-quantity-wrapper">
+                                            <div class="price-discount-info">
+                                                <span class="price-title">Total amount of Order: </span>
+                                                <span class="price">&#8377;<%= order.orderAmount.totalAmount %></span>
+                                            </div>
+                                            <div class="quantity-box">
+                                                <span class="quantity-title">Quantity : </span>
+                                                <span class="quantity bold"><%= order.product.ordered_quantity %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="payment-customer-details">
+                                        <div class="customer-info-box">
+                                            <div class="deliverTo">Deliver To : </div>
+                                            <span class="customer-name bold"><%= order.user.name %></span>
+                                            <div class="customer-info-wrapper">
+                                                <button class="i-btn">i</button>
+                                                <div class="customer-info d-none">
+                                                    <div class="info-item">
+                                                        <span class="item-title">Customer name :</span>
+                                                        <span class="customer-detail"><%= order.user.name %></span>
+                                                    </div>
+                                                    <div class="info-item">
+                                                        <span class="item-title">Customer Email :</span>
+                                                        <span class="customer-detail"><%= order.user.email %></span>
+                                                    </div>
+                                                    <div class="info-item">
+                                                        <span class="item-title">Customer Mobile :</span>
+                                                        <span class="customer-detail"><%= order.user.mobile %></span>
+                                                    </div>
+                                                    <div class="info-item address-info">
+                                                        <div class="item-title">Customer Address :</div>
+                                                        <div class="customer-detail"><%= order.user.delivery_address %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="payment-wrapper">
+                                            <span class="payment-title">Payment :</span>
+                                            <span class="bold"><%= order.payment_status == "cod" ? "Cash on delivery" : "Done" %></span>
+                                        </div>
+                                    </div>
+                                    <div class="item-action-delivery">
+                                        <div class="delivery">
+                                            <div class="delivery-content shipped-on">
+                                                <span>Shipped on,</span>
+                                                <span class="bold"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.shipped_on }) %></span>
+                                            </div>
+                                            <div class="delivery-content">
+                                                <span>Delivery by,</span>
+                                                <span class="bold"><%- include('../includes/helpers/getLocalStringOrder.ejs', { date : order.delivery_on }) %></span>
+                                            </div>
+                                        </div>
+                                        <div class="action">
+                                            <div class="order-action-box">
+                                                <form action="/confirm-delivery" method="post">
+                                                    <input type="hidden" name="orderId" value="<%= order._id %>">
+                                                    <button type="submit" class="btn">Deliver Order</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                        
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+                <% } else { %>
+                <div class="orders-empty-container">
+                    <img src="/assets/illustrations/no_data.svg" class="orders-empty-img">
+                    <h1 class="orders-empty-title">No Shipped orders!</h1>
+                    <p class="orders-empty-suggestion">Currently you don't have any Shipped orders.</p>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageOrders/orders.js"></script>
+</body>
+
+</html>

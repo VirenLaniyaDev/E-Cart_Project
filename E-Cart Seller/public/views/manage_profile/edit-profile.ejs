@@ -1,0 +1,134 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/styles/manage_profile/edit-profile.css">
+</head>
+
+<body>
+    <%- include('../includes/header.ejs') %>
+    
+    <main>
+        <% if(successMessage.length > 0){ %>
+        <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+        <% } %>
+        <% if(warningMessage.length > 0){ %>
+        <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+        <% } %>
+        <a href="/profile" class="back-btn mtb-8">
+            Back 
+        </a>
+        <form action="/edit-profile" method="post" id="editProfile-form" enctype="multipart/form-data" novalidate>
+            <div class="profile-head-container mtb-8">
+                <div class="profile-img-name">
+                    <div class="profile-img-box tooltip">
+                        <label for="change-profile-img">
+                            <% if(seller.profilePicture){ %>
+                                <img src="/<%= seller.profilePicture %>" id="profile-picture">
+                            <% } else { %>
+                                <img src="/assets/images/user.png" id="profile-picture">
+                            <% } %>
+                        </label>
+                        <span class="tooltip-text">Profile Picture</span>
+                        <input type="file" accept="image/jpg, image/jpeg, image/webp, image/png" max-size="2000" name="change_profile_img" id="change-profile-img" class="d-none">
+                    </div>
+                    <h1 class="profile-name"><%= seller.name %></h1>
+                </div>
+                <div class="profile-manage-options">
+                    <a href="/change-password" class="btn-link">
+                        <button type="button" class="btn change-password-btn">
+                            <img src="/assets/icons/changePassword_icon_white.svg">
+                            <span>Change Password</span>
+                        </button>
+                    </a>
+                </div> 
+            </div>
+    
+            <% if(errorMessage.length > 0){ %>
+            <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+            <% } %>
+
+            <div class="profile-content-container">
+                <fieldset class="fieldset mtb-8">
+                    <legend class="fieldset-title">Seller details</legend>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="seller-name" class="content-field-title">Name</label>
+                        <small class="input-error" id="seller-name-err"></small>
+                        <input type="text" name="seller_name" id="seller-name" placeholder="Enter Seller name" value="<%= previousInput.seller_name ? previousInput.seller_name : seller.name %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="seller-email" class="content-field-title">Email</label>
+                        <small class="input-error" id="seller-email-err"></small>
+                        <input 
+                            type="email" 
+                            name="seller_email" 
+                            id="seller-email" 
+                            class="<%= validationErrors.find(err => err.param === 'seller_email') ? 'invalid' : '' %>"
+                            placeholder="Enter Seller Email" 
+                            value="<%= previousInput.seller_email ? previousInput.seller_email : seller.email %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="seller-mobile" class="content-field-title">Mobile</label>
+                        <small class="input-error" id="seller-mobile-err"></small>
+                        <input 
+                            type="number" 
+                            name="seller_mobile" 
+                            id="seller-mobile" 
+                            class="<%= validationErrors.find(err => err.param === 'seller_mobile') ? 'invalid' : '' %>"
+                            placeholder="Enter Seller Mobile" 
+                            value="<%= previousInput.seller_mobile ? previousInput.seller_mobile : seller.mobile %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="about_seller" class="content-field-title">About Seller</label>
+                        <small class="input-error" id="about_seller-err"></small>
+                        <textarea name="about_seller" id="about_seller" placeholder="Write about seller"><%= previousInput.about_seller ? previousInput.about_seller : seller.about_seller %></textarea>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset mtb-8">
+                    <legend class="fieldset-title">Business details</legend>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="business-name" class="content-field-title">Business(Retail/Store) Name</label>
+                        <small class="input-error" id="business-name-err"></small>
+                        <input type="text" name="business_name" id="business-name" placeholder="Enter your business name" value="<%= previousInput.business_name ? previousInput.business_name : seller.business_name %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="business-gstin" class="content-field-title">GSTIN</label>
+                        <small class="input-error" id="business-gstin-err"></small>
+                        <input type="number" name="business_gstin" id="business-gstin" placeholder="Enter GST identification number" value="<%= previousInput.business_gstin ? previousInput.business_gstin : seller.business_GSTIN %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="business_address" class="content-field-title">Address (Business store/retail)</label>
+                        <small class="input-error" id="business_address-err"></small>
+                        <textarea name="business_address" id="business_address" placeholder="Enter Business Address"><%= previousInput.business_address ? previousInput.business_address : seller.business_address %></textarea>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset mtb-8">
+                    <legend class="fieldset-title">Payments details</legend>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="bank-name" class="content-field-title">Bank Name</label>
+                        <small class="input-error" id="bank-name-err"></small>
+                        <input type="text" name="bank_name" id="bank-name" placeholder="Enter your bank name" value="<%= previousInput.bank_name ? previousInput.bank_name : seller.bank_name %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="bank-account" class="content-field-title">Bank Account Number</label>
+                        <small class="input-error" id="bank-account-err"></small>
+                        <input type="number" name="bank_account" id="bank-account" placeholder="Enter bank account number" value="<%= previousInput.bank_account ? previousInput.bank_account : seller.bank_account_no %>">
+                    </div>
+                    <div class="input-container profile-content-field mtb-8">
+                        <label for="bank-ifsc" class="content-field-title">IFSC</label>
+                        <small class="input-error" id="bank-ifsc-err"></small>
+                        <input type="text" name="bank_IFSC" id="bank-ifsc" placeholder="Enter bank IFSC" value="<%= previousInput.bank_IFSC ? previousInput.bank_IFSC : seller.bank_IFSC %>">
+                    </div>
+                </fieldset>
+                <div class="submit-reset-container">
+                    <button type="reset" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Update profile</button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <%- include('../includes/footer.ejs') %>
+
+    <%- include('../includes/scripts.ejs') %>
+    <script src="/js/manageProfile/editProfile.js"></script>
+</body>
+
+</html>

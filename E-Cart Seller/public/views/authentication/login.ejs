@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %> | E-Cart Seller</title>
+    <link rel="stylesheet" href="/styles/root.css">
+    <link rel="stylesheet" href="/styles/authentication/style.css">
+    <link rel="stylesheet" href="/styles/authentication/responsive.css">
+    <link rel="stylesheet" href="/styles/forIncludes/popups.css">
+    <style>
+        .pop-up-container{
+            position: initial;
+            top:0;
+            padding:12px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="auth-sidebar">
+            <img src="/assets/illustrations/login_illustrator.svg" alt="Welcome Back">
+        </div>
+        <div class="auth-content">
+            <form action="/login" id="auth-form" class="auth-form" method="post" novalidate>
+                <h3>Welcome, Back</h3>
+                <h2>Login To E-Cart Seller</h2>
+                <% if(errorMessage.length > 0){ %>
+                <%- include('../includes/popups/dangerPopup.ejs', { message: errorMessage}) %>
+                <% } %>
+                <% if(successMessage.length > 0){ %>
+                <%- include('../includes/popups/successPopup.ejs', { message: successMessage}) %>
+                <% } %>
+                <% if(warningMessage.length > 0){ %>
+                <%- include('../includes/popups/warningPopup.ejs', { message: warningMessage}) %>
+                <% } %>
+                <div class="input-container">
+                    <label for="email">Email</label>
+                    <small class="input-error" id="email-err"></small>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        class="<%= errorField === 'email' ? 'invalid':''%>"
+                        placeholder="Enter email address" 
+                        value="<%= previousInput.email %>">
+                </div>
+                <div class="input-container">
+                    <label for="password">Password</label>
+                    <small class="input-error" id="password-err"></small>
+                    <input 
+                        type="password"
+                        name="password" 
+                        id="password"
+                        class="<%= errorField === 'password' ? 'invalid':''%>"
+                        placeholder="Enter password" 
+                        value="<%= previousInput.password %>">
+                    <a href="/forgot-password" id="forgot-password">
+                        Forgot password?
+                    </a>
+                </div>
+                <div class="check">
+                    <label><input type="checkbox">Remember me</label>
+                </div>
+                <div class="input-container">
+                    <button type="submit" class="auth-submit-btn">Sign in</button>
+                </div>
+                <div class="input-container">
+                    <p>Don't have an account? <a href="/signup">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="/js/authentication/loginValidation.js"></script>
+    <script src="/js/includes/popups.js"></script>
+</body>
+
+</html>
